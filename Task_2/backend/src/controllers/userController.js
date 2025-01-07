@@ -160,8 +160,8 @@ const updateProfile = async (req, res) => {
             user.password = hashedPassword;
         }
 
-        await user.save(); 
-
+        await User.findByIdAndUpdate(userId, user, { new: true });
+        
         res.status(200).json({
             message:["Profile updated successfully"],
             updatedUser: user,

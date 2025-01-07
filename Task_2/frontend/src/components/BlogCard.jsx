@@ -1,41 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import Card from './Card';
 const BlogCard = () => {
-  const [sampleBlogs , setSampleBlogs] = useState() ; 
+  const [allBlogs , setAllBlogs] = useState() ; 
 
-  const getSampleBlogs =  async() =>{
+  const getAllBlogs =async()=>{
     try {
-      
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/allsampleBlogs`, {
-        method: "GET",
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        // console.log(data);
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/getAllBlogs`,{
+            method: 'GET'
+        })
+        
+        const resData = await res.json() ; 
 
-        setSampleBlogs(data.allSampleBlogs);
-      } else {
-        console.error("Error fetching user data");
-      }
-    } 
-    
-    catch (error) {
-      console.log(error);
+        setAllBlogs(resData.allBlogs)
+
+    } catch (error) {
+        console.log(error)
     }
+}
 
-    }
 
-    useEffect(() =>{
-      getSampleBlogs()
-    },[])
+
+useEffect(()=>{
+    getAllBlogs()
+},[])
+
+
+const topPosts = allBlogs?.slice(0,6)
 
   return (
     <>
        <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="carousel">
   <div className="carousel-indicators">
 
-    {sampleBlogs?.map((_, idx) => (
+    {topPosts?.map((_, idx) => (
       <button
         key={idx}
         type="button"
@@ -50,7 +47,7 @@ const BlogCard = () => {
   </div>
 
   <div className="carousel-inner">
-    {sampleBlogs?.map((blog, idx) => (
+    {topPosts?.map((blog, idx) => (
       <div
         key={idx}
         className={`carousel-item ${idx === 0 ? "active" : ""}`}

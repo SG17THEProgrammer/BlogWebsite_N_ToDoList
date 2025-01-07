@@ -1,26 +1,13 @@
 const Blogs = require("../models/blogSchema");
-const sampleBlog = require("../models/sampleBlogSchema");
 
-const getSampleBlogs =async(req,res)=>{
-    try {
-        const allsampleBlogs = await sampleBlog.find({}) ;
-        // console.log(allsampleBlogs) 
-        return res.status(200).json({message:"All sample blogs found" , 
-            allSampleBlogs : allsampleBlogs
-        })
-
-    } catch (error) {
-        console.log(error)
-    }
-}
 
 const createBlog  = async(req, res)=>{
     try {
         // console.log(req.body)
-        const {name, title , story , description , image , authorImage , postedOn , tags , email} = req.body ; 
+        const {name, title , story , description , image , authorImage , postedOn , tags , email,category} = req.body ; 
 
         const newBlog = new Blogs({
-            name, title , story , description , image , authorImage , postedOn,tags , email 
+            name, title , story , description , image , authorImage , postedOn,tags , email ,category
         });
 
         await newBlog.save();
@@ -29,6 +16,29 @@ const createBlog  = async(req, res)=>{
             message: 'Blog post created successfully',
             blog: newBlog
         });
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const delPost = async (req, res) => {
+    try {
+        const {blogId,email} = req.body ; 
+
+    const blog = await Blogs.findById({_id:blogId})
+  if(!blog){
+    res.status(400).json({message:"Blog not found"})
+    return;
+  }
+  await Blogs.findByIdAndDelete({_id:blogId});
+
+
+  const yourBlog = await Blogs.find({email})
+
+  res.status(200).json({message:"Blog deleted successfully",
+    blogs:yourBlog
+  })
 
     } catch (error) {
         console.log(error)
@@ -65,4 +75,4 @@ try {
 }
 }
 
-module.exports = {getSampleBlogs,createBlog , getYourBlog,getAllBlogs}
+module.exports = {createBlog , getYourBlog,getAllBlogs , delPost}

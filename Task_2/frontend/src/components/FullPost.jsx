@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams ,NavLink} from 'react-router-dom';
 import '../css/FullPost.css'
 import Navbar from './Navbar';
 import { formatDistanceToNow } from 'date-fns';
@@ -11,12 +11,11 @@ import StarRating from './StarRating';
 import Comment from './Comment';
 import { format } from 'date-fns';
 
-
 const FullPost = () => {
-    const { id } = useParams();
+    const { id  } = useParams();
     const [allBlogs , setAllBlogs ] = useState();
 
-    const getAllBlogs =async(req,res)=>{
+    const getAllBlogs =async()=>{
         try {
             const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/getAllBlogs`,{
                 method: 'GET'
@@ -31,13 +30,15 @@ const FullPost = () => {
         }
     }
 
+    
+
     useEffect(()=>{
         getAllBlogs()
     },[])
 
-    const productDisplay = allBlogs?.filter((elem) => elem._id === id)[0];  
+    const postDisplay = allBlogs?.filter((elem) => elem._id === id)[0];  
 
-    const postedOn = productDisplay?.postedOn;
+    const postedOn = postDisplay?.postedOn;
     const postedDate = new Date(postedOn);
 
   
@@ -50,11 +51,25 @@ const FullPost = () => {
     const dateNday = postedDate.toString().slice(0, 3) + ', ' + postedDate.toString().substring(4,16);
 
 
-const markdownContent = productDisplay?.description;
+const markdownContent = postDisplay?.description;
 
 
 
-const tagLength = productDisplay?.tags?.length
+const tagLength = postDisplay?.tags?.length
+
+
+const getAverageRating = (blog) => {
+  const ratings = Object.values(blog.rating); 
+  const total = ratings.reduce((acc, rating) => acc + rating, 0); 
+  return total / ratings.length;
+};
+
+const topPosts = allBlogs
+  .filter(blog => getAverageRating(blog) >= 4) 
+  .sort((a, b) => getAverageRating(b) - getAverageRating(a)) 
+  .slice(0, 3);  
+
+  console.log(topPosts)
 
     return (
     <>
@@ -62,28 +77,29 @@ const tagLength = productDisplay?.tags?.length
 <div className="row">
   <div className="leftcolumn">
     <div className="card">
-      <h2>{productDisplay?.title}</h2>
+      <h2>{postDisplay?.title}</h2>
       <div className='tagdiv'>
-      {productDisplay?.tags?.map((elem , idx )=>{
-        return <span key={idx}>{elem}&nbsp;{idx < tagLength- 1 ?"|":""}&nbsp;</span> 
+      {postDisplay?.tags?.map((elem , idx )=>{
+        return <span key={idx} style={{textTransform:"uppercase"}}>{elem}&nbsp;{idx < tagLength- 1 ?"|":""}&nbsp;</span> 
       })}
       </div>
       <br />
-      <h5>{productDisplay?.story}</h5>
-      <p>{timeAgo} ({dateNday}) ,  {format(new Date(productDisplay?.postedOn), 'h:mm a')}</p>
+      <h5>{postDisplay?.story}</h5>
+      <p>{timeAgo} ({dateNday}) ,  {format(new Date(postDisplay?.postedOn), 'h:mm a')}</p>
       <div>
-        <img src={productDisplay?.image} alt="blog_image" className="fakeimg" />
+        <img src={postDisplay?.image} alt="blog_image" className="fakeimg" />
       </div> 
       <div dangerouslySetInnerHTML={{__html: marked(markdownContent) }}  style={{marginTop:"20px"}}/>
     </div>
   </div>
   <div className="rightcolumn">
     <div className="card1 card">
-      <h2>{productDisplay?.name}</h2>
+      <h2 style={{marginBottom:"15px"}}>Author</h2>
+      <h5>{postDisplay?.name}</h5>
       <div >
-      <img src={productDisplay?.authorImage} alt="" className="fakeimg" />
+      <img src={postDisplay?.authorImage} alt="" className="fakeimg" />
       </div>
-      <span>{productDisplay?.email}</span>
+      <span>{postDisplay?.email}</span>
     </div>
     <div className="card">
       <h3>Follow Me</h3>
@@ -95,19 +111,20 @@ const tagLength = productDisplay?.tags?.length
     </div>
     <div className="card">
       <h3>Rate this Post</h3>
-        <StarRating blogId={id} productDisplay={productDisplay} getAllBlogs={getAllBlogs}></StarRating>
+        <StarRating blogId={id} postDisplay={postDisplay} getAllBlogs={getAllBlogs}></StarRating>
     </div>
     <div className="card1 card ">
       <h3>Popular Post</h3>
-      <div className="fakeimg">Image</div><br/>
-      <div className="fakeimg">Image</div><br/>
-      <div className="fakeimg">Image</div>
+      {topPosts.map((elem,idx)=>{
+      return <><NavLink to={`/completePost/${elem._id}`}><div><img src={elem.image} alt="postImg" className='fakeimg' /></div></NavLink><br/></>
+      })
+      }
     </div>
     
   </div>
 </div>
   
-  <Comment blogId={id} productDisplay={productDisplay} getAllBlogs={getAllBlogs}></Comment>
+  <Comment blogId={id} postDisplay={postDisplay} getAllBlogs={getAllBlogs}></Comment>
     </>
   )
 }

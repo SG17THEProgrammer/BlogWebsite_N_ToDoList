@@ -3,8 +3,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: -10px;
 }
-
+.catBtn{
+  /* border: 1px solid red; */
+  /* width: 100%; */
+  color: black;
+  margin: 80px 60px 0 80px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
 .box::-webkit-scrollbar {
     display: none;
   }
@@ -86,3 +95,5 @@
     justify-content: center;
     align-items: center;
   }
+
+  

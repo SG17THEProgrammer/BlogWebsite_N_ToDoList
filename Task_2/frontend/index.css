@@ -26,3 +26,46 @@ body{
     place-items: center;
     width: 100%;
 }
+
+.button1 {
+    z-index: 99;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: lightcyan;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;  
+    transform: translateY(20px);  
+    transition: opacity 0.5s ease, transform 0.5s ease; 
+  }
+  
+  .button1.show {
+    opacity: 1;  
+    transform: translateY(0);  
+  }
+  
+  .button1:hover {
+    background-color: lightsteelblue ;
+  }
+  
+  .button1 {
+    animation: water-wave 3s linear infinite;
+    cursor: pointer;
+  }
+  
+  @keyframes water-wave {
+    0% {
+      border-radius: 56% 44% 70% 30% / 30% 54% 46% 70%;
+    }
+    50% {
+      border-radius: 3% 97% 15% 85% / 72% 0% 100% 28%;
+    }
+    100% {
+      border-radius: 56% 44% 70% 30% / 30% 54% 46% 70%;
+    }
+  }

@@ -5,10 +5,12 @@ import { AuthProvider } from './components/Auth.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './components/Footer.jsx';
+import { ScrollProvider } from './context/ScrollContext.jsx';
 
 createRoot(document.getElementById('root')).render(
   <>
   <AuthProvider>
+  <ScrollProvider>
     <App />
     <ToastContainer
                 position="top-right"
@@ -23,6 +25,7 @@ createRoot(document.getElementById('root')).render(
 
             />
   <Footer></Footer>
+  </ScrollProvider>
   </AuthProvider>
   </>
 )

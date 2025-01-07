@@ -15,8 +15,8 @@
   .fakeimg {
     background-color: #aaa;
     width: 100%;
-    padding: 20px;
-    height: 200px;
+    padding:10px;
+    height: auto;
     object-fit: cover;
   }
   

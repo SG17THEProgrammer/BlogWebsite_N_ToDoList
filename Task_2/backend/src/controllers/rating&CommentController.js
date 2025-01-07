@@ -45,7 +45,7 @@ const getRating=async(req,res)=>{
 
 const comment=async(req, res)=>{
     try {
-        console.log(req.body)
+        // console.log(req.body)
         const { comments, blogId} = req.body;
         const {author, userImage, text } = comments
 

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import '../css/SuccessStories.css'
+import { useScroll } from '../context/ScrollContext';
 
 const SuccessStories = () => {
+  const {successStoriesSectionRef} = useScroll()
     const [successStories , setsuccessStories] = useState() ; 
     
       const getSuccessStories =  async() =>{
@@ -33,7 +35,8 @@ const SuccessStories = () => {
 
 
   return (
-    <div>
+    <>
+         <div style={{ height: '0.1px' }}  ref={successStoriesSectionRef} />
         <div className='upperdiv'>
             <p className='heading'>Success Stories </p>
             <h1 style={{borderBottom:"3px solid black"}}>OUR HAPPY CUSTOMERS</h1>
@@ -60,7 +63,7 @@ const SuccessStories = () => {
 </>
         })}
         </div>
-    </div>
+    </>
   )
 }
 

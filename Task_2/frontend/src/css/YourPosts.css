@@ -4,9 +4,10 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 2 equal-width columns */
     padding: 30px;
-    border: 1px solid red;
+    /* border: 1px solid red; */
     width: 100%; /* Ensures the container takes the full width of its parent */
     place-items: center;
+    margin-top: 80px;
   }
   
 /* 
@@ -77,4 +78,12 @@
     cursor: pointer;
     font-family: 'merriweather';
     
+}
+
+.btnDiv{
+  border: 1px solid red ;
+  display: flex;
+  width: 100%;
+  /* justify-content: flex-start; */
+  /* align-items: center; */
 }

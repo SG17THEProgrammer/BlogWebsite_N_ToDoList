@@ -1,6 +1,6 @@
 import React from 'react'
 import '../css/Working.css'
-const Working = ({action}) => {
+const Working = ({action,reference}) => {
 
     const workingApi =[
       {
@@ -24,7 +24,7 @@ const Working = ({action}) => {
        
     ]
 
-      const chooseUsApi =[
+      const whyChooseUsApi =[
     {
         id:"0" ,
         image:"https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
@@ -50,6 +50,7 @@ const Working = ({action}) => {
 
   return (
     <>
+     <div style={{ height: '12vh' }}  ref={reference} />
         <div className='topdiv'>
             <p className='heading'>{action=="howItWorks"?"SNEEK A PEAK":"WHY CHOOSE US"}</p>
             <h1 style={{borderBottom:"3px solid black" }}>{action==="howItWorks"?"HOW IT WORKS":"UNIQUELY DIFFERENT"}</h1>
@@ -62,7 +63,7 @@ const Working = ({action}) => {
                     <h2>{elem.title}</h2>
                     <p className='para'>{elem.description}</p>
                 </div>
-                }): action =='whyChooseUs' ?chooseUsApi?.map((elem,idx)=>{
+                }): action =='whyChooseUs' ?whyChooseUsApi?.map((elem,idx)=>{
                     return <div className='particularStep1' key={idx}>
                     <img src={elem.image} alt="create" className='img9'/>
                     <h4>{elem.title}</h4>

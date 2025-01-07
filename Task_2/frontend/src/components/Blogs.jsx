@@ -1,10 +1,13 @@
 import React from 'react'
 import BlogCard from './BlogCard'
+import { useScroll } from '../context/ScrollContext'
 
 const Blogs = () => {
+  const {sampleBlogSectionRef} = useScroll()
   return (
     <>
-        <div className='topdiv'>
+     <div style={{ height: '16vh' }} ref={sampleBlogSectionRef} />
+        <div className='topdiv' >
             <p className='heading'>Samples of Our Blogs/Articles</p>
             <h1 style={{borderBottom:"3px solid black" }}>THE ROAD SO FAR</h1>
             <br />

@@ -7,7 +7,7 @@ import { ImagetoBase64 } from '../utility/ImagetoBase64'
 
 const UserProfile = () => {
   const {user} = useAuth()
-
+// console.log(user)
   const [userData, setUserData] = useState(true)
     const [userInfo , setUserInfo] = useState({
         name : "",
@@ -29,7 +29,7 @@ const UserProfile = () => {
         setUserData(false);
     }
 
-    console.log(userInfo)
+    // console.log(userInfo)
     const handleInput= (e) => {
         let name = e.target.name;
         let value = e.target.value;
@@ -62,12 +62,11 @@ const UserProfile = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({userInfo  , userId:user._id})
             });
-            //console.log(response)
-            const data = await response.json();
-            console.log(data)
-
+            
             if (response.ok) {
-                toast.success(data.message[0])
+              const data = await response.json();
+              console.log(data)
+              toast.success(data.message[0])
             }
             else {
                 toast.error(data.message[0])
@@ -86,32 +85,32 @@ const UserProfile = () => {
   <div className="form-container1">
     <form className="form" onSubmit={updateUser}>
       <div className="form-header1">
-        <img src={userInfo.image || user.image} alt="Profile Picture" className="profile-image1" onChange={handleInput} />
+        <img src={userInfo.image || user.image || "https://images.unsplash.com/photo-1567446537708-ac4aa75c9c28?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} alt="Profile Picture" className="profile-image1" onChange={handleInput} />
         <label htmlFor="file" style={{marginTop:"-15px" , textDecoration:"underline" , cursor:"pointer"}}className='label2'>Upload an image</label>
         <input type="file" name="file" id="file" accept='image/*' className='inp1' onChange={handleUploadProfileImage}   />
         <h2 style={{marginTop:"20px"}} className='h2'>Your Profile</h2>
-        <p className='p2'>Welcome, <b>{user.name}</b> |  <span>Excited to have you onboard </span></p>
+        <p className='p2'>Welcome, <b>{user.name || "USERNAME"}</b> |  <span>Excited to have you onboard </span></p>
       </div>
       
       <div className="form-body1">
         <div className="input-group">
           <label htmlFor="name" className='label2'>Full Name</label>
-          <input type="text" id="name" name="name" placeholder="Enter name" required value={userInfo.name} onChange={handleInput} className='input2'/>
+          <input type="text" id="name" name="name" placeholder="NAME" required value={userInfo.name} onChange={handleInput} className='input2'/>
         </div>
         
         <div className="input-group">
           <label htmlFor="email" className='label2'>Email</label>
-          <input type="email" id="email" name="email" placeholder="Enter email" required value={userInfo.email} onChange={handleInput} className='input2'/>
+          <input type="email" id="email" name="email" placeholder="EMAIL" required value={userInfo.email} onChange={handleInput} className='input2'/>
         </div>
         
         <div className="input-group">
           <label htmlFor="phone" className='label2'>Phone Number</label>
-          <input type="tel" id="phone" name="phone" placeholder="Enter Phone Number" required value={userInfo.phone} onChange={handleInput} className='input2'/>
+          <input type="tel" id="phone" name="phone" placeholder="Phone Number" required value={userInfo.phone} onChange={handleInput} className='input2'/>
         </div>
         
         <div className="input-group">
           <label htmlFor="age" className='label2'>Age</label>
-          <input type="number" id="age" name="age" placeholder="Enter age " required value={userInfo.age} onChange={handleInput} className='input2'/>
+          <input type="number" id="age" name="age" placeholder="Age " required value={userInfo.age} onChange={handleInput} className='input2'/>
         </div>
         
         <div>

@@ -1,12 +1,10 @@
 import { createContext, useContext ,useState,useEffect} from "react";
-import { toast } from "react-toastify";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [user, setUser] = useState("");
-
 
 
     const storeTokensInLS = (serverToken) => {
@@ -17,13 +15,11 @@ export const AuthProvider = ({ children }) => {
       const LogoutUser = () => {
         setToken("");
         localStorage.removeItem("token");
-        toast.success("You are logged out")
       };
 
 
 
       let isLoggedIn = !!token;
-
   const userAuthentication = async () => {
     // console.log(isLoggedIn , token)
     if (isLoggedIn){
@@ -52,7 +48,7 @@ export const AuthProvider = ({ children }) => {
   
   useEffect(()=>{
     userAuthentication();
-  },[isLoggedIn , token])
+  },[isLoggedIn])
 
 return (
     <>

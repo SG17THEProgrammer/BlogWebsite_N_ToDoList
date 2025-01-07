@@ -39,7 +39,7 @@ body {
     transition: .25s ease;
   }
   
-  .blog-container a:hover {
+  .blog-container .a:hover {
     border-color: #ff4d4d;
     color: #ff4d4d;
   }
@@ -94,7 +94,7 @@ body {
     width: 100%;
   }
   
-  .blog-title h1 a {
+  .blog-title h1 .a {
     color: #333;
     font-weight: 100;
   }
@@ -116,7 +116,7 @@ body {
     margin-left: .5rem;
   }
   
-  .blog-tags a {
+  .blog-tags .a1 {
     color: black;
     border: 1px solid #bbb; /* Lightened color for #333 */
     border-radius: 3px;
@@ -128,7 +128,13 @@ body {
     text-align: center;
     text-transform: uppercase;
     white-space: nowrap;
-    width: 5rem;
+    width: auto;
+  }
+
+  .blog-tags .a1:hover {
+    border-color: #ff4d4d;
+    color: #ff4d4d;
+    cursor: pointer;
   }
   
   /* Blog Footer */

@@ -5,14 +5,14 @@ import { toast } from 'react-toastify';
 import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { format } from 'date-fns';
-const Comment = ({ blogId, productDisplay }) => {
-    const { user } = useAuth();
-    const commentRef = useRef(null);
+const Comment = ({ blogId, postDisplay }) => {
+
+    const { user ,isLoggedIn} = useAuth();
 
     const [editCommentId, setEditCommentId] = useState();
     const [newCommentText, setNewCommentText] = useState("");
 
-    const [allComments, setAllComments] = useState(productDisplay?.comments)
+    const [allComments, setAllComments] = useState(postDisplay?.comments)
     const [comments, setComments] = useState({
         author: '',
         userImage: '',
@@ -20,6 +20,8 @@ const Comment = ({ blogId, productDisplay }) => {
     })
 
     const postComment = async () => {
+        if(isLoggedIn) {
+
         try {
             const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/comment`, {
                 method: "POST",
@@ -43,6 +45,13 @@ const Comment = ({ blogId, productDisplay }) => {
         } catch (error) {
             console.log(error)
         }
+    }
+    else{
+      toast.error("You must be logged in")
+      setComments({
+        text: ''
+    })
+    }
     }
 
 
@@ -69,11 +78,17 @@ const Comment = ({ blogId, productDisplay }) => {
             console.log(error)
         }
     }
-
     const editComment = (commentId, currText) => {
-        setEditCommentId(commentId)
-        setNewCommentText(currText);
+        // If commentId is the same as the current one (i.e. the user clicked on the same comment again)
+        if (editCommentId === commentId) {
+            setEditCommentId(null);
+            setNewCommentText('');
+        } else {
+            setEditCommentId(commentId);
+            setNewCommentText(currText);
+        }
     }
+    
 
     const handleChange = (e) => {
         setNewCommentText(e.target.value);
@@ -91,19 +106,19 @@ const Comment = ({ blogId, productDisplay }) => {
             })
 
             const resData = await res.json();
-console.log(resData)
+            console.log(resData)
             if (res.ok) {
 
                 const updatedComments = allComments.map(comment => {
                     if (comment._id === editCommentId) {
-                      return { ...comment, text: newCommentText };
+                        return { ...comment, text: newCommentText };
                     }
                     return comment;
-                  });
-          
-                  setAllComments(updatedComments); 
-                    setEditCommentId(null);
-                
+                });
+
+                setAllComments(updatedComments);
+                setEditCommentId(null);
+
                 toast.success(resData.message)
             }
             else {
@@ -115,18 +130,7 @@ console.log(resData)
         }
     }
 
-    const handleClickOutside = (e) => {
-        if (commentRef.current && !commentRef.current.contains(e.target)) {
-          setEditCommentId(null); 
-        }
-      };
-    
-      useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-          document.removeEventListener('mousedown', handleClickOutside);
-        };
-      }, []);
+
 
     return (
         <>
@@ -155,12 +159,12 @@ console.log(resData)
                                     {editCommentId == elem._id ? <button className='btn' style={{ fontSize: "13px" }} onClick={() => handleEditComment(elem._id)}>Edit</button> : ""}
 
 
-                                    <button className='btn' onClick={() => editComment(elem._id, elem.text)}><CiEdit></CiEdit></button>
+                                    {postDisplay?.email == user.email ? <> <button className='btn' onClick={() => editComment(elem._id, elem.text)}><CiEdit></CiEdit></button>
 
-                                    <button className='btn' style={{ color: "red" }} onClick={() => deleteComment(idx)}><MdDelete></MdDelete></button>
+                                        <button className='btn' style={{ color: "red" }} onClick={() => deleteComment(idx)}><MdDelete></MdDelete></button></> : ""}
                                 </div>
                             </div>
-                            {editCommentId == elem._id ? <textarea   ref={commentRef} name="newCommentText" value={newCommentText} className='txtArea' onChange={handleChange}></textarea> : <p>{elem.text}</p>}
+                            {editCommentId == elem._id ? <textarea  name="newCommentText" value={newCommentText} className='txtArea' onChange={handleChange}></textarea> : <p>{elem.text}</p>}
 
 
                             <div className='attrib'>

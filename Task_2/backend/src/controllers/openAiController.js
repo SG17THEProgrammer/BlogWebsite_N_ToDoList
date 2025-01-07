@@ -58,7 +58,7 @@ const generateAnswerUsingAi=async(req,res)=>{
 
         if(purpose =='forStory'){
             // msg = `Create a blog story in less than 500 characters(not words) where the title is '${title}' and the tags are '${tagsString}'. The answer should be in a clean paragraph format . The story should focus on using these tags appropriately.Also do not add title in the response. The paragraph should be professional.`;
-            msg = `Create a blog story in markdown  less than 500 characters(not words) where the title is '${title}' and the tags are '${tagsString}'. The answer should be in a clean paragraph format . The story should focus on using these tags appropriately.Also do not add title and tags in the response. The paragraph should be professional.`;
+            msg = `Create a blog story in markdown between 200-500 characters with title '${title}' and keywords '${tagsString}'.  Avoid mentioning the structure explicitly, and ensure the content flows naturally in breif.Do not mention the tags and heading in the response`
         }
 
         else if(purpose == 'forDescription'){

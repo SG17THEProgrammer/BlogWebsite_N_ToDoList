@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { useAuth } from './Auth';
-const StarRating = ({blogId , productDisplay}) => {
-    const {user} = useAuth()
+const StarRating = ({blogId , postDisplay}) => {
+    const {user,isLoggedIn} = useAuth()
     const [rating, setRating] = useState(0);
-    // const [finalRatings , setFinalRatings] = useState(parseFloat(sumRatings/len))
-    const [finalRatings , setFinalRatings] = useState()
 
     const handleStarClick = (rate) => {
       setRating(rate);  
@@ -33,6 +31,7 @@ const StarRating = ({blogId , productDisplay}) => {
 
 
       const giveRating=async(req,res)=>{
+        if(isLoggedIn) {
         try {
             const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/rating`,{
                 method:"POST" , 
@@ -56,12 +55,16 @@ const StarRating = ({blogId , productDisplay}) => {
             console.log(error)
         }
       }
+      else{
+        toast.error("You must be logged in")
+        setRating(0)
+      }
+      }
 
 
 
       const getRating = async(req,res)=>{
-        try {
-
+          try {
           const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/getRating`,{
         method:"POST" , 
           headers: {
@@ -77,8 +80,9 @@ const StarRating = ({blogId , productDisplay}) => {
         } catch (error) {
           console.log(error)
         }
+      
       }
-
+      
       useEffect(() => {
         if (user?._id && blogId) {
           getRating();
@@ -87,20 +91,23 @@ const StarRating = ({blogId , productDisplay}) => {
 
 
 
- // const sumRatings = productDisplay?.rating?.reduce((sum, currentRating) => sum + currentRating, 0);
+ // const sumRatings = postDisplay?.rating?.reduce((sum, currentRating) => sum + currentRating, 0);
 
-      //   const len =  productDisplay?.rating.length 
+      //   const len =  postDisplay?.rating.length 
 
-      const allRatings = Object.values( productDisplay?.rating);
+      const allRatings = Object.values( postDisplay?.rating);
+      // console.log(allRatings)
   const sum = allRatings.reduce((acc, rating) => acc + rating, 0);
+  // console.log(sum)
   const avgRating = (parseFloat(sum / allRatings.length)).toFixed(2);
+  // console.log(avgRating)
     
   return (
     <>
-     <span>Rating: {avgRating?avgRating:"0"}⭐</span>
+     <span>Rating: {allRatings.length!=0?avgRating:"0"}⭐</span>
     <div className='starDiv'>
      {renderStars()} 
-     <div style={{marginLeft:"10px"}}>{rating ==0 ? "" : `You rated ${rating} stars ` }</div>
+     <div style={{marginLeft:"10px"}}>{rating ==0 ? `Your rating: ${rating}` : `You rated ${rating} stars ` }</div>
     </div>
     <button className='btn1' onClick={giveRating}>Rate</button>
     </>
