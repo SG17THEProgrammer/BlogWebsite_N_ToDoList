@@ -45,6 +45,27 @@ const delPost = async (req, res) => {
     }
 }
 
+const editPost = async (req, res) => {
+    try {
+            const {postId , postData} = req.body ; 
+
+        const updatedPost = await Blogs.findByIdAndUpdate(
+            postId, 
+            postData, 
+            { new: true } 
+          );
+      
+          if (!updatedPost) {
+            return res.status(404).json({ message: 'Post not found' });
+          }
+      
+          res.status(200).json({message : "Post updated successfully" , updatedPost:updatedPost});  
+
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating post', error });
+    }
+}
+
 const getYourBlog = async (req, res) => {
 try {
     const email = req.body.email
@@ -75,4 +96,4 @@ try {
 }
 }
 
-module.exports = {createBlog , getYourBlog,getAllBlogs , delPost}
+module.exports = {createBlog , getYourBlog,getAllBlogs , delPost,editPost}

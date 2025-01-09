@@ -57,8 +57,9 @@ const Navbar = () => {
                 
                 <NavLink to='/createPost'>
 
-                    <span>Create a Post</span>
+                    {location.pathname.startsWith("/editPost") ? "" :<span>Create a Post</span>}
                 </NavLink>
+
                 </>:""}
 
 

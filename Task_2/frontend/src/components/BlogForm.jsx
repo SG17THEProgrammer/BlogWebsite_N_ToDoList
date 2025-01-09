@@ -13,13 +13,14 @@ import { toast } from 'react-toastify';
 import Loader from '../components/Loader.jsx'
 // import marked from 'marked';
 import { Remarkable } from 'remarkable';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 
 
 const BlogForm = ({ motive, allBlogs }) => {
   const { user } = useAuth()
   const navigate = useNavigate()
+
 
 
   const modules = {
@@ -58,54 +59,41 @@ const BlogForm = ({ motive, allBlogs }) => {
     category:''
   });
 
-  // if (motive == "Edit Post") {
-
     const { id } = useParams()
-
+  
     const blogInfo = allBlogs?.filter((elem) => elem._id === id)[0];
 
-    // console.log(blogInfo)
     
     const [blogData, setBlogData] = useState(true)
 
-    useEffect(() =>{
-    if (blogData && blogInfo) {
+    if (blogInfo && blogData) {
       setTags(blogInfo.tags)
-      // const md = new Remarkable();
-      // const htmlContent = md.render(blogInfo.description);
-      // setFormData((prevData) => ({
-      //   ...prevData, 
-      //   description: blogInfo.description, 
-      // }));
-
+    
       setFormData({
         ...formData,
         title: blogInfo.title,
         story: blogInfo.story,
-        description: blogInfo.description,
+        description: blogInfo?.description,
         authorImage: blogInfo.authorImage, 
-        // tags: blogInfo.tags,
+        tags: blogInfo.tags,
         image: blogInfo.image,
+        category: blogInfo.category,
       });
+
       setBlogData(false);
     }
-  },[id])
-  // }
-
+ 
   useEffect(() => {
-    if (user) {
       setFormData({
         name: user.name,
         email: user.email,
         authorImage: user.image || "https://images.unsplash.com/photo-1567446537708-ac4aa75c9c28?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       });
-    }
-  }, [])
+  }, [user])
 
-
+console.log(formData)
   const handleKeyPress = (e) => {
     const inputValue = newTag.trim();
-
     if (e.key === 'Enter' && inputValue !== '') {
       e.preventDefault();
       if (!tags.includes(inputValue)) {
@@ -152,7 +140,6 @@ const BlogForm = ({ motive, allBlogs }) => {
       };
     }
 
-    // console.log(dataToSend);
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/getAnswer`, {
         method: "POST",
@@ -188,7 +175,7 @@ const BlogForm = ({ motive, allBlogs }) => {
       setLoader(false)
       return;
     }
-    else if (formData.tags.length == 0) {
+    else if (formData?.tags?.length == 0) {
       toast.error("Enter atleast one tag")
       setLoader(false)
       return;
@@ -246,11 +233,20 @@ const BlogForm = ({ motive, allBlogs }) => {
   }
 
   const handleQuillChange = (value) => {
-    setFormData({
-      ...formData,
-      description: value,
-    });
-  };
+    if(value=="<p><br></p>" && blogInfo){
+      setFormData({
+        ...formData,
+        description: blogInfo.description,
+      });
+    }
+    else{
+      setFormData({
+        ...formData,
+        description: value,
+      });
+    }
+  }
+
 
   const handleTags = (e) => {
     const inputValue = e.target.value.trim();
@@ -259,7 +255,6 @@ const BlogForm = ({ motive, allBlogs }) => {
 
   const handleUploadProfileImage = async (e) => {
     const image = await ImagetoBase64(e.target.files[0])
-    // console.log(image)
     setFormData((prev) => {
       return {
         ...prev,
@@ -269,11 +264,8 @@ const BlogForm = ({ motive, allBlogs }) => {
 
   }
 
-  // console.log(formData)
-
-  const handleSubmit = async (req, res) => {
+  const handleSubmit = async () => {
     try {
-      // console.log(formData)
       const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/createPost`, {
         method: "POST",
         headers: {
@@ -283,8 +275,6 @@ const BlogForm = ({ motive, allBlogs }) => {
       })
 
       const resData = await response.json();
-
-      // console.log(resData )
 
       if (response.ok) {
 
@@ -312,12 +302,49 @@ const BlogForm = ({ motive, allBlogs }) => {
     }
   }
 
+
+  const editPost = async()=>{
+    try {
+      console.log(formData)
+
+      const dataToSend = {
+        title: formData.title,
+    story: formData.story,
+    description: formData.description,
+    authorImage: formData.authorImage,
+    tags:formData.tags,
+    image: formData.image,
+    category:formData.category
+      }
+
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/editPost`, {
+        method: "PATCH",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({postId:id, postData:dataToSend})
+      })
+
+      const resData = await res.json()
+      if(res.ok){
+        toast.success(resData.message)
+        navigate('/yourPosts')
+        window.location.reload()
+      }
+      else{
+        toast.error(resData.message)
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <>
       <Navbar></Navbar>
       <div className='postdiv'>
         <h1 className='h1'>{motive=="Create A Post" ?"Create A Post" : "Edit Post"}</h1>
-        {/* <Markdown>**Cricket**</Markdown> */}
         <label htmlFor="file" className='label' style={{ marginBottom: "10px", textDecoration: "underline", color: "skyblue", cursor: "pointer" }}>Upload an Image</label>
 
         <img src={formData?.image || "https://images.unsplash.com/photo-1567446537708-ac4aa75c9c28?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} alt="blog_image" className='img5' />
@@ -332,18 +359,18 @@ const BlogForm = ({ motive, allBlogs }) => {
         <label htmlFor="category" className='label'>Category</label>
         <select className='inpTxt' onChange={handleInput} name='category' id='category' value={formData.category} required >
           <option value='other'>Choose a category</option>
-          <option value="technology">Technology</option>
-          <option value="healthNfitness">Health & Fitness</option>
-          <option value="lifestyle">Lifestyle</option>
-          <option value="foodNrecipes">Food & Recipes</option>
-          <option value="travel">Travel</option>
-          <option value="fashion">Fashion</option>
-          <option value="finance">Finance</option>
-          <option value="parenting">Parenting</option>
-          <option value="education">Education</option>
-          <option value="work">Work</option>
-          <option value="astronomy">Astronomy</option>
-          <option value="businessNentrepreneurship">Business & Entrepreneurship</option>
+          <option value="Technology">Technology</option>
+          <option value="Health & Fitness">Health & Fitness</option>
+          <option value="Lifestyle">Lifestyle</option>
+          <option value="Food & Recipes">Food & Recipes</option>
+          <option value="Travel">Travel</option>
+          <option value="Fashion">Fashion</option>
+          <option value="Finance">Finance</option>
+          <option value="Parenting">Parenting</option>
+          <option value="Education">Education</option>
+          <option value="Work">Work</option>
+          <option value="Astronomy">Astronomy</option>
+          <option value="Business & Entrepreneurship">Business & Entrepreneurship</option>
         </select>
 
         <label htmlFor="tags" className='label'>Tags <span className='instruction'>(Press Enter to add a tag)</span></label>
@@ -374,7 +401,7 @@ const BlogForm = ({ motive, allBlogs }) => {
         <ReactQuill theme="snow" modules={modules} formats={formats} className='reactquill' placeholder='Write/Generate your blog' name='description' onChange={handleQuillChange} value={formData.description} />
         <br></br>
 
-        {motive=="Create A Post" ? <button className='btn2' onClick={handleSubmit}>Create Post</button>:<button className='btn2' onClick={handleSubmit}>Edit Post</button>}
+        {motive=="Create A Post" ? <button className='btn2' onClick={handleSubmit}>Create Post</button>:<button className='btn2' onClick={editPost}>Edit Post</button>}
 
 
       </div>

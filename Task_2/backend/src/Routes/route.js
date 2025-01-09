@@ -5,7 +5,7 @@ const { register, getAllUsers, login, getUser, updateProfile } = require('../con
 const signupSchema = require('../validators/signupSchema')
 const loginSchema = require('../validators/loginSchema')
 const blogSchema = require('../validators/blogSchema')
-const { createBlog, getYourBlog, getAllBlogs, delPost } = require('../controllers/blogController')
+const { createBlog, getYourBlog, getAllBlogs, delPost, editPost } = require('../controllers/blogController')
 const { getSuccessStories } = require('../controllers/successStoriesController')
 const { generateAnswerUsingAi } = require('../controllers/openAiController')
 const auth = require('../middleware/auth.js')
@@ -33,6 +33,8 @@ router.get('/user',auth , getUser)
 router.get('/getAllBlogs', getAllBlogs)
 
 router.put('/updateProfile' , updateProfile)
+
+router.patch('/editPost' , editPost)
 
 
 module.exports = router

@@ -52,9 +52,9 @@ const {
 
 const generateAnswerUsingAi=async(req,res)=>{
     try {
-        // console.log(req.body)
+        console.log(req.body)
         const {title , purpose , tags , story} = req.body;
-        const tagsString = tags.join(', ');
+        const tagsString = tags.join(',');
 
         if(purpose =='forStory'){
             // msg = `Create a blog story in less than 500 characters(not words) where the title is '${title}' and the tags are '${tagsString}'. The answer should be in a clean paragraph format . The story should focus on using these tags appropriately.Also do not add title in the response. The paragraph should be professional.`;

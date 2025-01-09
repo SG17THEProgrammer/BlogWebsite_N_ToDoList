@@ -76,7 +76,7 @@ const AllPosts = () => {
                                             <h3>{item.title}</h3>
                                             <div className='hoverDiv'>
 
-                                                <img src={item.authorImage} alt="author_image" className='img4' />
+                                                <img src={item.authorImage || "https://images.unsplash.com/photo-1567446537708-ac4aa75c9c28?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} alt="author_image" className='img4' />
                                                 <p>Written by {item.name}</p>
                                             </div>
                                         </div>

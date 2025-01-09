@@ -82,9 +82,9 @@ const YourPosts = () => {
             </NavLink>
   
 
-            {/* <NavLink to={`/editPost/${elem._id}`} style={{textDecoration:"none"}}>
+            <NavLink to={`/editPost/${elem._id}`} style={{textDecoration:"none"}}>
             <button className='btn3' style={{backgroundColor:"skyblue"}}>Edit</button>
-            </NavLink> */}
+            </NavLink>
 
             
             <button className='btn3' style={{backgroundColor:"red"}}onClick={()=>deletePost(elem._id)}>Delete</button>
