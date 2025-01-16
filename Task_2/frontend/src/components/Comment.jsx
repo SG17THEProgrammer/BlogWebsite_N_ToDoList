@@ -145,7 +145,7 @@ const Comment = ({ blogId, postDisplay }) => {
             </div>
 
             {/* comment div  */}
-            <h5 style={{ margin: "60px 0 20px 60px", textDecoration: "underline" }}>{allComments.length} comments</h5>
+            {allComments.length>0?<h5 style={{ margin: "60px 0 20px 60px", textDecoration: "underline" }}>{allComments.length} comments</h5>: <h5 style={{ margin: "60px 0 20px 60px", textDecoration: "underline" ,textAlign:"center"}}>No comments yet!!</h5>}
             <div>
 
                 {allComments.map((elem, idx) => {

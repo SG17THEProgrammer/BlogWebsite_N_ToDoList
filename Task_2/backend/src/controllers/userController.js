@@ -121,8 +121,15 @@ const getAllUsers = async (req, res) => {
 const updateProfile = async (req, res) => {
     try {
         const { userId, userInfo } = req.body;
-        const {name, email, phone, age, password, image , confirmPassword} = userInfo 
+        const {name, email, phone, age, password, image , confirmPassword ,youtube,
+        instagram,
+        facebook,
+        twitter,
+        github,
+        portfolio ,linkedin} = userInfo 
 
+        // console.log(portfolio)
+        //     console.log(portfolio=="")
 
         const user = await User.findById(userId); 
 
@@ -154,6 +161,61 @@ const updateProfile = async (req, res) => {
         if (phone) user.phone = phone;
         if (age) user.age = age;
         if (image) user.image = image;
+
+        
+        if (!user.socialHandle) {
+            user.socialHandle = {
+                youtube: youtube || "",
+                instagram: instagram || "",
+                twitter: twitter || "",
+                instagram: instagram || "",
+                facebook: facebook || "",
+                github: github || "",
+                portfolio: portfolio || "",
+                linkedin: linkedin || "",
+            };
+        }
+
+        if (twitter!="") {
+            user.socialHandle.twitter =twitter;
+          }
+          else{
+            user.socialHandle.twitter =""; 
+          }
+      
+          if (instagram!="") {
+            user.socialHandle.instagram = instagram;
+          }
+          else{
+            user.socialHandle.twitter =""; 
+          }
+      
+          if (facebook!="") {
+            user.socialHandle.facebook =facebook;
+          }  else{
+            user.socialHandle.facebook =""; 
+          }
+          if (youtube!="") {
+            user.socialHandle.youtube =youtube;
+          }  else{
+            user.socialHandle.youtube =""; 
+          }
+          if (portfolio!="") {
+            user.socialHandle.portfolio = portfolio;
+          }  else{
+            user.socialHandle.portfolio =""; 
+          }
+          if (github!="") {
+            user.socialHandle.github = github;
+          }  else{
+            user.socialHandle.github =""; 
+          }
+          if (linkedin!="") {
+            user.socialHandle.linkedin = linkedin;
+          }  else{
+            user.socialHandle.linkedin =""; 
+          }
+
 
         if (password) {
             const hashedPassword = await bcrypt.hash(password, 10);

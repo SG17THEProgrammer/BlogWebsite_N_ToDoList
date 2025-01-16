@@ -1,5 +1,5 @@
 const Blogs = require("../models/blogSchema");
-
+const User = require("../models/userSchema");
 
 const createBlog  = async(req, res)=>{
     try {
@@ -96,4 +96,26 @@ try {
 }
 }
 
-module.exports = {createBlog , getYourBlog,getAllBlogs , delPost,editPost}
+//user for the particular blog
+const getParticularBlogUser = async (req, res)=>{
+try {
+    const email = req.body.email
+    const user = await User.find({email: email})
+
+    if(!user) {
+        res.status(400).json({message:"User not found"})
+    return;
+    }
+
+    return res.status(201).json({
+        message: 'User found successfully',
+        bloguser:user
+    });
+
+
+} catch (error) {
+    
+}
+}
+
+module.exports = {createBlog , getYourBlog,getAllBlogs , delPost,editPost , getParticularBlogUser}

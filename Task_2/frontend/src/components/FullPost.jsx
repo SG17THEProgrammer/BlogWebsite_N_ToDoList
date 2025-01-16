@@ -7,6 +7,10 @@ import { marked } from 'marked';
 import { FaInstagramSquare } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
+import { FaTwitterSquare } from "react-icons/fa";
+import { FiLink } from "react-icons/fi";
+import { FaSquareGithub } from "react-icons/fa6";
+import { IoLogoYoutube } from "react-icons/io";
 import StarRating from './StarRating';
 import Comment from './Comment';
 import { format } from 'date-fns';
@@ -14,6 +18,9 @@ import { format } from 'date-fns';
 const FullPost = () => {
     const { id  } = useParams();
     const [allBlogs , setAllBlogs ] = useState();
+    const [blogUser , setBlogUser ] = useState();
+    
+    const postDisplay = allBlogs?.filter((elem) => elem._id === id)[0];  
 
     const getAllBlogs =async()=>{
         try {
@@ -27,16 +34,42 @@ const FullPost = () => {
 
         } catch (error) {
             console.log(error)
+          }
         }
-    }
+        
+        
+    const getUser = async()=>{
+try {
+  const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/getParticularBlogUser`,{
+    method: 'POST',
+    headers:{
+      "Content-Type":"application/json" , 
+    } , 
+    body:JSON.stringify({email:postDisplay?.email})
+})
 
-    
+const resData = await res.json() ;
+console.log(resData)
+
+if(res.ok){
+  setBlogUser(resData.bloguser[0]) 
+}
+else{
+  console.log("Error in fetching api")
+}
+} catch (error) {
+  console.log(error)
+}
+    }
 
     useEffect(()=>{
         getAllBlogs()
-    },[])
+      },[])
+      
+      useEffect(()=>{
+      getUser()
+    },[postDisplay?.email])
 
-    const postDisplay = allBlogs?.filter((elem) => elem._id === id)[0];  
 
     const postedOn = postDisplay?.postedOn;
     const postedDate = new Date(postedOn);
@@ -69,7 +102,16 @@ const topPosts = allBlogs
   .sort((a, b) => getAverageRating(b) - getAverageRating(a)) 
   .slice(0, 3);  
 
-  console.log(topPosts)
+
+
+  const socialLinks = blogUser?.socialHandle == undefined ?[] :Object.keys(blogUser?.socialHandle)
+    .filter(platform => blogUser?.socialHandle[platform]) 
+    .map(platform => ({
+      platform,
+      url: blogUser.socialHandle[platform]
+    }));
+
+console.log(socialLinks)
 
     return (
     <>
@@ -104,9 +146,20 @@ const topPosts = allBlogs
     <div className="card">
       <h3>Follow Me</h3>
       <div className='icondiv'>
-       <FaLinkedin title='Linkedin'></FaLinkedin>
-        <FaFacebook title='Facebook'></FaFacebook>
-        <FaInstagramSquare title='Instagram'></FaInstagramSquare>
+      {socialLinks?.map((elem, idx) => {
+        const { url, platform } = elem;
+        return (
+          <a key={idx} href={url} target="_blank" rel="noopener noreferrer" style={{ margin: '0 10px' ,color:"black"}}>
+            {platform === "linkedin" ? <FaLinkedin title="LinkedIn" /> : ""}
+            {platform === "facebook" ? <FaFacebook title="Facebook" /> : ""}
+            {platform === "instagram" ? <FaInstagramSquare title="Instagram" /> : ""}
+            {platform === "youtube" ? <IoLogoYoutube title="YouTube" /> : ""}
+            {platform === "portfolio" ? <FiLink title="Portfolio" /> : ""}
+            {platform === "twitter" ? <FaTwitterSquare title="Twitter" /> : ""}
+            {platform === "github" ? <FaSquareGithub title="GitHub" /> : ""}
+          </a>
+        );
+      })}
       </div>
     </div>
     <div className="card">

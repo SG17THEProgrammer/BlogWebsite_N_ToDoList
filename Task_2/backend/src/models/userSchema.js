@@ -27,19 +27,45 @@ const userSchema = new mongoose.Schema({
         unique: [true, "phone number already exists"],
     },
     age: {
-    type: String,  
-    validate: {
-        validator: function (v) {
-            const age = parseInt(v, 10);
-            return age >= 10 && age <= 100; 
+        type: String,
+        validate: {
+            validator: function (v) {
+                const age = parseInt(v, 10);
+                return age >= 10 && age <= 100;
+            },
+            message: "Age should be between 0 and 100"
         },
-        message: "Age should be between 0 and 100"
+        required: [true, "Age is required"],
     },
-    required: [true, "Age is required"],
-  },
     password: {
         type: String,
         required: true
+    },
+    socialHandle: {
+        twitter: {
+            type: String,
+        },
+        instagram: {
+            type: String,
+        },
+        facebook: {
+            type: String,
+        }
+        ,
+        github: {
+            type: String,
+        }
+        ,
+        portfolio: {
+            type: String,
+        }
+        ,
+        youtube: {
+            type: String,
+        },
+        linkedin: {
+            type: String,
+        }
     },
     tokens: [{
         token: {
@@ -59,6 +85,7 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+
 })
 
 userSchema.methods.generateToken = async function () {

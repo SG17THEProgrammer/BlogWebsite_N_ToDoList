@@ -3,15 +3,13 @@
   .form-container1 {
     background-color: #ffffff;
     border-radius: 8px;
-    width: 100%;
-    max-width: 500px;
+    width: 70vw;
     padding: 30px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
     margin-top: 80px;
   }
   
-  /* Header Styling */
   .form-header1 {
     margin-bottom: 20px;
     display: flex;
@@ -50,22 +48,24 @@
     display: flex;
     flex-direction: column;
     gap: 5px;
+    margin-right: 20px;
   }
   
   .label2 {
-    font-size: 0.9rem;
+    font-size: 0.8em;
     font-weight: 600;
     color: #555;
     text-align: left;
   }
   
   .input2 {
-    padding: 12px 15px;
-    font-size: 1rem;
+    padding: 8px 15px;
+    font-size: 0.9rem;
     border: 1px solid #ddd;
     border-radius: 8px;
     outline: none;
     transition: all 0.3s ease;
+    width: 100%;
   }
   
   .input2:focus {
@@ -77,7 +77,6 @@
     color: #bbb;
   }
   
-  /* Submit Button */
   .submit-btn {
     background-color: #4CAF50;
     color: white;
@@ -97,7 +96,6 @@
     outline: none;
   }
   
-  /* Media Query for Smaller Screens */
   @media (max-width: 600px) {
     .form-container1 {
       padding: 20px;
@@ -106,9 +104,23 @@
   }
   
   .uprDiv{
-    /* border: 1px solid red ; */
     display: flex;
     justify-content: center;
     align-items: center;
   }
+  
+  .side{
+  /* border: 1px solid red ; */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+align-items: center;
+}
 
+.handle{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  column-gap: 20px;
+  row-gap: 20px;
+  /* border: 1px solid red; */
+}
