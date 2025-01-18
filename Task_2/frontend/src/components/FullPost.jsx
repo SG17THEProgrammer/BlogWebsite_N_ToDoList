@@ -111,7 +111,7 @@ const topPosts = allBlogs
       url: blogUser.socialHandle[platform]
     }));
 
-console.log(socialLinks)
+// console.log(socialLinks)
 
     return (
     <>
@@ -145,7 +145,7 @@ console.log(socialLinks)
     </div>
     <div className="card">
       <h3>Follow Me</h3>
-      <div className='icondiv'>
+      {socialLinks.length>0 ? <><div className='icondiv'>
       {socialLinks?.map((elem, idx) => {
         const { url, platform } = elem;
         return (
@@ -160,14 +160,14 @@ console.log(socialLinks)
           </a>
         );
       })}
-      </div>
+      </div></>:<p>No social handle for this user </p>}
     </div>
     <div className="card">
       <h3>Rate this Post</h3>
         <StarRating blogId={id} postDisplay={postDisplay} getAllBlogs={getAllBlogs}></StarRating>
     </div>
     <div className="card1 card ">
-      <h3>Popular Post</h3>
+      <h3>Top Rated Posts</h3>
       {topPosts.map((elem,idx)=>{
       return <><NavLink to={`/completePost/${elem._id}`}><div><img src={elem.image} alt="postImg" className='fakeimg' /></div></NavLink><br/></>
       })

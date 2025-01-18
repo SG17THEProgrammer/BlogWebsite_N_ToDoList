@@ -8,6 +8,7 @@ const blogSchema = require('../validators/blogSchema')
 const { createBlog, getYourBlog, getAllBlogs, delPost, editPost, getParticularBlogUser } = require('../controllers/blogController')
 const { getSuccessStories } = require('../controllers/successStoriesController')
 const { generateAnswerUsingAi } = require('../controllers/openAiController')
+const {getPlans, createSession} = require('../controllers/pricingController')
 const auth = require('../middleware/auth.js')
 const { rating, comment, delComment, getRating, editComment } = require('../controllers/rating&CommentController.js')
 const { contact } = require('../controllers/controller.js')
@@ -26,12 +27,14 @@ router.post('/editComment' ,editComment)
 router.post('/contact' ,contact)
 router.post('/delPost' ,delPost)
 router.post('/getParticularBlogUser' ,getParticularBlogUser)
+router.post('/createSession' ,createSession)
 
 
 router.get('/allUsers',getAllUsers)
 router.get('/allsuccessStories',getSuccessStories)
 router.get('/user',auth , getUser)
 router.get('/getAllBlogs', getAllBlogs)
+router.get('/getPlans', getPlans)
 
 router.put('/updateProfile', updateProfile)
 

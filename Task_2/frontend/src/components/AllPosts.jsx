@@ -30,7 +30,7 @@ const AllPosts = () => {
     }, [])
 
     const categories = [...new Set(allBlogs?.map((blog) => blog.category))];
-    console.log(categories)
+    // console.log(categories)
 
     const handleCategoryClick = (category) => {
         setSelectedCategory(category === selectedCategory ? null : category);

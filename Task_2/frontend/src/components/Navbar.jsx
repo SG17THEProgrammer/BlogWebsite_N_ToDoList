@@ -8,7 +8,7 @@ import { useScroll } from '../context/ScrollContext'
 const Navbar = () => {
     const location = useLocation();
     const { isLoggedIn, user , LogoutUser } = useAuth();
-    const {scrollTo , workingSectionRef ,sampleBlogSectionRef,successStoriesSectionRef,whyChooseUsSectionRef} = useScroll()
+    const {scrollTo , workingSectionRef ,sampleBlogSectionRef,successStoriesSectionRef,whyChooseUsSectionRef , pricingSectionRef} = useScroll()
     const navigate = useNavigate()
 
     const logout=()=>{
@@ -25,15 +25,6 @@ const Navbar = () => {
                     📖 BlogEDastan 📰
                 </NavLink>
 
-                {/* <NavLink>
-
-                    <span>Pricing</span>
-                </NavLink>
-                <NavLink>
-
-                    <span>FAQ</span>
-                </NavLink> */}
-
 {location.pathname=='/' || location.pathname=='/home' ? <>
                     <span onClick={()=>scrollTo(workingSectionRef)} className='span'>How It Works</span>
 
@@ -41,7 +32,11 @@ const Navbar = () => {
 
                     <span onClick={()=>scrollTo(whyChooseUsSectionRef)} className='span'>Why Choose Us?</span>
 
-                    <span onClick={()=>scrollTo(successStoriesSectionRef)} className='span'>Success Stories</span></>:""}
+                    <span onClick={()=>scrollTo(successStoriesSectionRef)} className='span'>Success Stories</span>
+
+                    <span onClick={()=>scrollTo(pricingSectionRef)} className='span'>Pricing</span>
+                    
+                    </>:""}
 
               {isLoggedIn?  <NavLink to='/contact'>
                     <span>Contact Us</span>

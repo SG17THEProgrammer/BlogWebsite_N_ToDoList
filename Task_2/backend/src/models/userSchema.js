@@ -81,6 +81,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         contentType: String
     },
+    stripeCustomerId:{
+        type: String,
+    },
     date: {
         type: Date,
         default: Date.now

@@ -6,9 +6,10 @@ import Blogs from './Blogs'
 import SuccessStories from './SuccessStories'
 import '../css/Working.css'
 import { useScroll } from '../context/ScrollContext'
+import Pricing from './Pricing'
 
 const Home = () => {
-const {whyChooseUsSectionRef,workingSectionRef,successStoriesSectionRef} = useScroll()
+const {whyChooseUsSectionRef,workingSectionRef} = useScroll()
   return (
     <>
       <Navbar></Navbar>
@@ -23,10 +24,9 @@ const {whyChooseUsSectionRef,workingSectionRef,successStoriesSectionRef} = useSc
       <Working action={'whyChooseUs'} reference={whyChooseUsSectionRef}></Working>
       </div>
 
-    <div ref={successStoriesSectionRef}>
+      <Pricing></Pricing>
 
       <SuccessStories></SuccessStories>
-    </div>
     </>
   )
 }

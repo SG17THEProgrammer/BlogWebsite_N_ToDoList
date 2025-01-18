@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Vollkorn&display=swap");
 .upperdiv{
-    margin-top: 130px;
+    /* margin-top: 130px; */
     /* border: 1px solid red; */
     display: flex;
     flex-direction: column;

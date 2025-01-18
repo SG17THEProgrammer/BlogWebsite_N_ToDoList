@@ -36,8 +36,9 @@ const SuccessStories = () => {
 
   return (
     <>
-         <div style={{ height: '0.1px' }}  ref={successStoriesSectionRef} />
-        <div className='upperdiv'>
+         <div style={{ height: '85px' ,marginTop:"130px" }}  ref={successStoriesSectionRef} />
+         <div >
+        <div className='upperdiv' >
             <p className='heading'>Success Stories </p>
             <h1 style={{borderBottom:"3px solid black"}}>OUR HAPPY CUSTOMERS</h1>
         </div>
@@ -62,6 +63,7 @@ const SuccessStories = () => {
 </main>
 </>
         })}
+    </div>
         </div>
     </>
   )

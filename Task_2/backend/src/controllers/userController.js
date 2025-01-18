@@ -1,5 +1,6 @@
 const User = require("../models/userSchema")
 const bcrypt = require('bcrypt')
+const {stripe} = require('../utils/stripe')
 
 const register = async (req, res) => {
     try {
@@ -20,9 +21,17 @@ const register = async (req, res) => {
             const hashPassword = await bcrypt.hash(password,10)
             // password = hashPassword
 
+            const customer = await stripe.customers.create(
+                {
+                  email,
+                },
+                {
+                  apiKey: process.env.STRIPE_SECRET_KEY,
+                }
+              );
 
         const registerUser = new User({
-            name, email, phone, password:hashPassword, image, age
+            name, email, phone, password:hashPassword, image, age,stripeCustomerId: customer.id
         });
 
         try {
@@ -33,7 +42,8 @@ const register = async (req, res) => {
                 message: ['Registered successfully'],
                 userData: registerUser,
                 token: await registerUser.generateToken(),
-                userID: registerUser._id.toString()
+                userID: registerUser._id.toString(),
+                stripeCustomerId: customer.id,
             });
         } catch (error) {
             return res.status(500).json({

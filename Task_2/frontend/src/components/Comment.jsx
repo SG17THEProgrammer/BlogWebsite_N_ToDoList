@@ -12,12 +12,16 @@ const Comment = ({ blogId, postDisplay }) => {
     const [editCommentId, setEditCommentId] = useState();
     const [newCommentText, setNewCommentText] = useState("");
 
-    const [allComments, setAllComments] = useState(postDisplay?.comments)
+    const [allComments, setAllComments] = useState()
     const [comments, setComments] = useState({
         author: '',
         userImage: '',
         text: ''
     })
+
+    useEffect(()=>{
+        setAllComments(postDisplay?.comments)
+    },[postDisplay?.comments])
 
     const postComment = async () => {
         if(isLoggedIn) {
@@ -145,10 +149,10 @@ const Comment = ({ blogId, postDisplay }) => {
             </div>
 
             {/* comment div  */}
-            {allComments.length>0?<h5 style={{ margin: "60px 0 20px 60px", textDecoration: "underline" }}>{allComments.length} comments</h5>: <h5 style={{ margin: "60px 0 20px 60px", textDecoration: "underline" ,textAlign:"center"}}>No comments yet!!</h5>}
+            {allComments?.length>0?<h5 style={{ margin: "60px 0 20px 60px", textDecoration: "underline" }}>{allComments.length} comments</h5>: <h5 style={{ margin: "60px 0 20px 60px", textDecoration: "underline" ,textAlign:"center"}}>No comments yet!!</h5>}
             <div>
 
-                {allComments.map((elem, idx) => {
+                {allComments?.map((elem, idx) => {
                     return <><div className='commDiv' key={idx}>
                         <div className='leftDiv'><img src={elem.userImage} alt="user_image" /></div>
                         <div className='rightDiv'>

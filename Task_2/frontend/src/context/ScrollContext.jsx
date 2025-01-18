@@ -10,14 +10,16 @@ export const ScrollProvider = ({ children }) => {
   const sampleBlogSectionRef = useRef(null);
   const successStoriesSectionRef = useRef(null);
   const whyChooseUsSectionRef = useRef(null);
+  const pricingSectionRef = useRef(null);  
   const noRef = useRef(null);  
+
   // Function to scroll to a specific section
   const scrollTo = (ref) => {
     ref.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <ScrollContext.Provider value={{ scrollTo, workingSectionRef, sampleBlogSectionRef,successStoriesSectionRef , noRef,whyChooseUsSectionRef}}>
+    <ScrollContext.Provider value={{ scrollTo, workingSectionRef, sampleBlogSectionRef,successStoriesSectionRef , noRef,whyChooseUsSectionRef,pricingSectionRef}}>
       {children}
     </ScrollContext.Provider>
   );
