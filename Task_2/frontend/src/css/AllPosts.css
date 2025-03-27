@@ -7,13 +7,151 @@
 }
 .catBtn{
   /* border: 1px solid red; */
-  /* width: 100%; */
+  width: 80%;
   color: black;
-  margin: 80px 60px 0 80px;
+  margin: 0px 60px 0 80px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
 }
+.searchPrem{
+  /* border: 1px solid red; */
+  margin-top: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
+  /* width: 80%; */
+  flex-direction: row;
+  margin: 80px 60px 0 65px;
+}
+
+/* Link Container */
+.link-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+}
+
+
+.circle-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background-color: #1e40af; /* Dark blue */
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: none;
+  cursor: pointer;
+}
+
+/* Hidden for smaller devices (using media query for md breakpoint) */
+@media (min-width: 768px) {
+  .hidden-md-block {
+    display: block;
+  }
+}
+
+/* Rotating Text */
+text {
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
+  font-family: Arial, sans-serif;
+}
+
+/* The textPath inside the circle */
+textPath {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rotate-svg {
+  animation: rotateText 10s linear infinite;
+}
+
+@keyframes rotateText {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* Search Container */
+.search-container {
+  position: relative;
+  width: 90%;  /* Adjust width as needed */
+}
+
+/* Search Input Field Style */
+.search-input {
+  width: 100%;
+  padding: 6px 40px 6px 16px; /* Add padding for space around text */
+  border: 2px solid #ccc;  /* Light border color */
+  border-radius: 30px; /* Rounded corners */
+  font-size: 16px;
+  color: #333;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+/* Focus Effect */
+.search-input:focus {
+  border-color: #4A90E2; /* Blue border when focused */
+  box-shadow: 0 0 10px rgba(74, 144, 226, 0.2); /* Light blue shadow */
+}
+
+/* Add search icon inside the input (optional) */
+.search-input::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.search-container .search-input {
+  padding-left: 40px; /* Add padding on the left for the icon */
+}
+
+.search-container .search-input {
+  background: url('https://img.icons8.com/ios-filled/50/000000/search.png') no-repeat 10px center;
+  background-size: 20px;
+}
+
+/* Blinking Text Animation */
+@keyframes blink {
+  0% {
+    opacity: 1;
+    fill: #ff69b4;  }
+  25% {
+    opacity: 0;
+     }
+  50% {
+    opacity: 1;
+    fill: #00ff00;  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    fill: #ff0000;  }
+}
+
+/* Apply blinking animation to Premium Posts text */
+.blinking-text {
+  animation: blink 3s infinite;
+}
+
 .box::-webkit-scrollbar {
     display: none;
   }
@@ -96,4 +234,4 @@
     align-items: center;
   }
 
-  
+ 

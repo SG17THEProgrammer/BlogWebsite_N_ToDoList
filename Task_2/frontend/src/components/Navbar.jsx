@@ -21,7 +21,7 @@ const Navbar = () => {
     return (
         <>
             <div className='otrDiv'>
-                <NavLink to='/'>
+                <NavLink to='/' onClick={() => window.scrollTo({ top: "0", behavior: "smooth"})}>
                     📖 BlogEDastan 📰
                 </NavLink>
 
@@ -38,7 +38,7 @@ const Navbar = () => {
                     
                     </>:""}
 
-              {isLoggedIn?  <NavLink to='/contact'>
+              {isLoggedIn?  <NavLink to='/contact' onClick={() => window.scrollTo({ top: "0", behavior: "smooth" })}>
                     <span>Contact Us</span>
                 </NavLink>:""}
 

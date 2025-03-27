@@ -1,11 +1,13 @@
 import { createContext, useContext ,useState,useEffect} from "react";
+import axios from "axios";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
 
     const [token, setToken] = useState(localStorage.getItem('token'));
     const [user, setUser] = useState("");
-
+    const [plan , setPlan] = useState()
+    const [articles, setArticles] = useState()
 
     const storeTokensInLS = (serverToken) => {
         setToken(serverToken)
@@ -31,7 +33,6 @@ export const AuthProvider = ({ children }) => {
           'Authorization': `Bearer ${token}`,
         },
       });
-      // console.log(response)
 
       if (response.ok) {
         const data = await response.json();
@@ -44,15 +45,35 @@ export const AuthProvider = ({ children }) => {
       console.log(error);
     }
   }
+  else{
+    console.log("You are not logged in")
+  }
   };
+
+  const getPlan = async () => {
+    try {
+      const {data:response} = await axios.post(
+       `${import.meta.env.VITE_BACKEND_API}/getPlan`,{
+        email:user?.email
+        // email:"shray3@gmail.com"
+       }
+      );
+
+      setPlan(response.plan)
+      setArticles(response.article)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   
   useEffect(()=>{
     userAuthentication();
+    getPlan()
   },[isLoggedIn])
 
 return (
     <>
-    <AuthContext.Provider value={{ isLoggedIn, storeTokensInLS , user , LogoutUser}}>
+    <AuthContext.Provider value={{ isLoggedIn, storeTokensInLS , user , LogoutUser , plan , articles}}>
       {children}
     </AuthContext.Provider>
     </>

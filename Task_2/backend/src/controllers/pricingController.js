@@ -1,7 +1,8 @@
 const User = require("../models/userSchema");
+const Blogs = require("../models/blogSchema");
 const {stripe}  = require("../utils/stripe")
 
-const getPlans = async(req,res)=>{
+const getAllPlans = async(req,res)=>{
     try {
         const prices = await stripe.prices.list({
             apiKey: process.env.STRIPE_SECRET_KEY,
@@ -61,5 +62,45 @@ const createSession = async (req, res) => {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   };
+
+
+  const getPlan = async(req, res) => {
+    try {
+        const email = req.body.email
+        const user = await User.findOne({email});
+        // console.log(user.stripeCustomerId);
+      
+        const subscriptions = await stripe.subscriptions.list(
+          {
+            customer: user?.stripeCustomerId,
+            status: "all",
+            expand: ["data.default_payment_method"],
+          },
+          {
+            apiKey: process.env.STRIPE_SECRET_KEY,
+          }
+        );
+      
+        if (!subscriptions.data.length) return res.json([]);
+      
+        const plan = subscriptions.data[0].plan.nickname;
+        
+        if (plan === "Basic") {
+          const articles = await Blogs.find({ access: "Basic" });
+          return res.json({plan:plan , article : articles});
+        } else if (plan === "Standard") {p
+          const articles = await Blogs.find({
+            access: { $in: ["Basic", "Standard"] },
+          });
+          return res.json({plan:plan , article : articles});
+        } else {
+          const articles = await Blogs.find({});
+          return res.json({plan:plan , article : articles});
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+  }
   
-module.exports ={getPlans,createSession}
+module.exports ={getAllPlans,createSession,getPlan}

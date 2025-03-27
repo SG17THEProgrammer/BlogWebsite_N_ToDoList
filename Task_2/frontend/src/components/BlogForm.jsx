@@ -91,7 +91,7 @@ const BlogForm = ({ motive, allBlogs }) => {
       });
   }, [user])
 
-console.log(formData)
+// console.log(formData)
   const handleKeyPress = (e) => {
     const inputValue = newTag.trim();
     if (e.key === 'Enter' && inputValue !== '') {
@@ -290,6 +290,7 @@ console.log(formData)
         toast.success(resData.message);
 
         navigate('/yourPosts')
+        window.scrollTo({ top: "0", behavior: "smooth" })
 
       }
       else {

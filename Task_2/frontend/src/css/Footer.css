@@ -10,6 +10,8 @@
 	font: bold 16px sans-serif;
 	padding: 55px 50px;
     margin-top: 200px;
+	bottom: 0;
+	position: static;
 }
 
 .footer-distributed .footer-left,

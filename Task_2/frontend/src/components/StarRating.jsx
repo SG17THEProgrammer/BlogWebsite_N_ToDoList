@@ -3,7 +3,9 @@ import { toast } from 'react-toastify';
 import { useAuth } from './Auth';
 const StarRating = ({blogId , postDisplay}) => {
     const {user,isLoggedIn} = useAuth()
-    const [rating, setRating] = useState(0);
+    const [rating,  setRating] = useState(0);
+    const [avgRating , setAvgRating] = useState(0);
+    const [ratingCtn , setRatingCtn] = useState(0);
 
     const handleStarClick = (rate) => {
       setRating(rate);  
@@ -43,13 +45,13 @@ const StarRating = ({blogId , postDisplay}) => {
 
 
               const resData = await res.json();
-                // setRating(finalRatings)
 
               const rate =resData?.blog?.rating?.[user._id]
               setRating(rate) 
-
-              toast.success(resData.message)    
-
+              
+              toast.success(resData.message)  
+              
+              getRating();
 
         } catch (error) {
             console.log(error)
@@ -76,35 +78,27 @@ const StarRating = ({blogId , postDisplay}) => {
 			const resData = await res.json();
 
       setRating(resData.userRating)
-      
+      setAvgRating(resData.avgRating)
+      setRatingCtn(resData.ratingCtn)
+
+
         } catch (error) {
           console.log(error)
         }
       
       }
       
-      useEffect(() => {
-        if (user?._id && blogId) {
-          getRating();
-        }
-      }, [user?._id, blogId]); 
+          
+          useEffect(() => {
+            if (user?._id && blogId) {
+              getRating();
+            }
+          }, [user?._id ,blogId]); 
 
 
-
- // const sumRatings = postDisplay?.rating?.reduce((sum, currentRating) => sum + currentRating, 0);
-
-      //   const len =  postDisplay?.rating.length 
-
-      const allRatings = Object.values( postDisplay?.rating);
-      // console.log(allRatings)
-  const sum = allRatings.reduce((acc, rating) => acc + rating, 0);
-  // console.log(sum)
-  const avgRating = (parseFloat(sum / allRatings.length)).toFixed(2);
-  // console.log(avgRating)
-    
-  return (
+          return (
     <>
-     <span>Rating: {allRatings.length!=0?avgRating:"0"}⭐</span>
+     <span>Rating: {avgRating==="NaN" ? 0 : avgRating}⭐ <span style={{fontSize:"12px" , fontWeight:"600"}}> (Based on {ratingCtn} reviews)</span></span>
     <div className='starDiv'>
      {renderStars()} 
      <div style={{marginLeft:"10px"}}>{rating ==0 ? `Your rating: ${rating}` : `You rated ${rating} stars ` }</div>

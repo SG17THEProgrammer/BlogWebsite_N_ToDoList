@@ -61,6 +61,11 @@ const blogSchema = new mongoose.Schema({
         type: [String],
         required: true,
     },
+    access:{
+        type: String,
+        enum: ["Basic", "Standard", "Premium"],
+        // required: true
+    },
     postedOn: {
         type: Date,
         default: Date.now,

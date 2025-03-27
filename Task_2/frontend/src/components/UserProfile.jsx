@@ -4,15 +4,30 @@ import '../css/UserProfile.css'
 import Navbar from './Navbar'
 import { toast } from 'react-toastify'
 import { ImagetoBase64 } from '../utility/ImagetoBase64'
+import Badge from './Badge'
 
 const UserProfile = () => {
-  const {user} = useAuth()
+  const {user,plan} = useAuth()
 
-console.log(user)
-  const [userData, setUserData] = useState(true)
-    const [userInfo , setUserInfo] = useState({
-        name : "",
-        email:"",
+// console.log(user)
+// console.log(plan)
+
+let posts = 0
+
+    if (plan === "Basic") {
+        posts = 10
+    } else if (plan === "Standard") {
+        posts = 50
+    }
+    else if (plan === "Premium") {
+        posts = 100
+    }
+
+
+const [userData, setUserData] = useState(true)
+const [userInfo , setUserInfo] = useState({
+  name : "",
+  email:"",
         phone:"",
         age:"" , 
         image:"" ,
@@ -25,26 +40,27 @@ console.log(user)
         github:"",
         portfolio:"",
         linkedin:""
-    })
-
-    if (userData && user) {
-      setUserInfo({
-            name: user.name,
-            email: user.email,
-            phone: user.phone,
-            age: user.age,
-            youtube:user.socialHandle.youtube,
-        instagram:user.socialHandle.instagram,
-        facebook:user.socialHandle.facebook,
-        twitter:user.socialHandle.twitter,
-        github:user.socialHandle.github,
-        portfolio:user.socialHandle.portfolio,
-        linkedin:user.socialHandle.linkedin,
+      })
+      
+      if (userData && user) {
+        setUserInfo({
+          name: user?.name,
+            email: user?.email,
+            phone: user?.phone,
+            age: user?.age,
+            image:user?.image,
+            youtube:user?.socialHandle?.youtube,
+        instagram:user?.socialHandle?.instagram,
+        facebook:user?.socialHandle?.facebook,
+        twitter:user?.socialHandle?.twitter,
+        github:user?.socialHandle?.github,
+        portfolio:user?.socialHandle?.portfolio,
+        linkedin:user?.socialHandle?.linkedin,
         });
         setUserData(false);
     }
-
     // console.log(userInfo)
+    
     const handleInput= (e) => {
         let name = e.target.name;
         let value = e.target.value;
@@ -75,7 +91,7 @@ console.log(user)
             const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/updateProfile`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({userInfo  , userId:user._id})
+                body: JSON.stringify({userInfo  , userId:user?._id})
             });
             
             if (response.ok) {
@@ -100,13 +116,32 @@ console.log(user)
   <div className="form-container1">
     <form className="form" onSubmit={updateUser}>
       <div className="form-header1">
-        <img src={userInfo.image || user.image || "images.unsplash.com/photo-1567446537708-ac4aa75c9c28?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} alt="Profile Picture" className="profile-image1" onChange={handleInput} />
+
+    <Badge plan={plan}></Badge>
+
+        <div className='form-header-img'>
+
+        <img src={userInfo?.image || "https://images.unsplash.com/photo-1567446537708-ac4aa75c9c28?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} alt="Profile Picture" className="profile-image1" onChange={handleInput} />
         <label htmlFor="file" style={{marginTop:"-15px" , textDecoration:"underline" , cursor:"pointer"}} className='label2'>Upload an image</label>
+
+
         <input type="file" name="file" id="file" accept='image/*' className='inp1' onChange={handleUploadProfileImage}   />
-        <h2 style={{marginTop:"20px"}} className='h2'>Your Profile</h2>
-        <p className='p2'>Welcome, <b>{user.name || "USERNAME"}</b> |  <span>Excited to have you onboard </span></p>
+        </div>
+
+
+        <Badge posts={posts}></Badge>
+
+
       </div>
+
+      <div className="form-header-det">
+
+        <h2 style={{marginTop:"20px"}} className='h2'>Your Profile</h2>
+        <p className='p2'>Welcome, <b>{userInfo?.name || "USERNAME"}</b> |  <span>Excited to have you onboard </span></p>
       
+      </div>
+
+
       <div className="form-body1">
       <div className='side'>
 

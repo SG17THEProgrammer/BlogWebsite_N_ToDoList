@@ -5,10 +5,14 @@ import Box from '@mui/material/Box';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from './Auth';
 const AllPosts = () => {
-
+    const {plan , articles} = useAuth()
+    
     const [allBlogs, setAllBlogs] = useState()
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [filteredBlogs, setFilteredBlogs] = useState(allBlogs);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const getAllBlogs = async () => {
         try {
@@ -32,35 +36,90 @@ const AllPosts = () => {
     const categories = [...new Set(allBlogs?.map((blog) => blog.category))];
     // console.log(categories)
 
-    const handleCategoryClick = (category) => {
-        setSelectedCategory(category === selectedCategory ? null : category);
-      };
+  const handleCategoryClick = (category) => {
+    const newCategory = category === selectedCategory ? null : category;
+    setSelectedCategory(newCategory);
+  };
 
-      const filteredBlogs = selectedCategory
-      ? allBlogs.filter((blog) => blog.category === selectedCategory)
-      : allBlogs;
+  const handleSearch = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+  };
 
+  useEffect(() => {
+    const filtered = allBlogs?.filter((blog) => {
 
+      const matchesCategory = selectedCategory
+        ? blog.category === selectedCategory
+        : true;
+
+      const matchesSearchQuery =
+        blog.title.toLowerCase().includes(searchQuery) ||
+        blog.category.toLowerCase().includes(searchQuery) ||
+        blog.story.toLowerCase().includes(searchQuery) ||
+        blog.tags.some((tag) => tag.toLowerCase().includes(searchQuery));
+
+      return matchesCategory && matchesSearchQuery;
+    });
+
+    setFilteredBlogs(filtered);
+  }, [searchQuery, selectedCategory, allBlogs]); 
+
+        
     return (
         <>
             <Navbar></Navbar>
+            <div className='searchPrem'>
+                <div className="search-container">
+                    <input type="text" placeholder="Search..." className="search-input" onChange={handleSearch} value={searchQuery}/>
+                </div>
+
+
+                <div>
+                    <div className="link-container">
+                        <NavLink className="hidden-md-block relative" to='/premiumPosts'>
+                            <svg viewBox="0 0 200 200" width="100" height="100" className="text-lg tracking-widest rotate-svg">
+                                <path id="circlePath" fill="none" d="M 100, 100 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0" />
+                                <text>
+                                    <textPath href="#circlePath" startOffset="0%" style={{ fontSize: "17px" }}>
+                                        Explore More•
+                                    </textPath>
+                                    <textPath href="#circlePath" startOffset="29.33%" style={{ fontSize: "17px" }}>
+                                        Upgrade yourself•
+                                    </textPath>
+                                    <textPath href="#circlePath" startOffset="66.66%" style={{ fontSize: "17px" }} className='blinking-text'>
+                                        Premium Posts•
+                                    </textPath>
+                                </text>
+                            </svg>
+                            <button className="circle-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="50" height="50" fill="none" stroke="white" strokeWidth="2">
+                                    <line x1="6" y1="18" x2="18" y2="6" />
+                                    <polyline points="9 6 18 6 18 15" />
+                                </svg>
+                            </button>
+                        </NavLink>
+                    </div>
+                </div>
+
+            </div>
             <div className='catBtn'>
                 {categories?.map((elem, idx) => {
                     return <button style={{
-                          backgroundColor: selectedCategory === elem ? '#007bff' : '#ccc',
-                          color: selectedCategory === elem ? '#fff' : '#000',
+                        backgroundColor: selectedCategory === elem ? '#007bff' : '#ccc',
+                        color: selectedCategory === elem ? '#fff' : '#000',
                         margin: '5px',
                         padding: '5px',
                         border: 'none',
                         cursor: 'pointer',
                         borderRadius: '4px',
-                    }} key={idx}  onClick={() => handleCategoryClick(elem)}>{elem}</button>
+                    }} key={idx} onClick={() => handleCategoryClick(elem)}>{elem}</button>
                 })}
             </div>
             <div className='imgDiv'>
 
-                <Box sx={{ width: "90vw", height: "auto", overflowY: 'scroll', marginTop: "20px" }} className="box">
-                    <ImageList variant="masonry" cols={3} gap={8}>
+                <Box sx={{ width: "90vw", height: "100vh", overflowY: 'scroll', marginTop: "20px" }} className="box">
+                    <ImageList variant="masonry" cols={3} gap={8} >
                         {filteredBlogs?.map((item, idx) => (
                             <NavLink to={`/completePost/${item._id}`}><ImageListItem key={idx} className="image-item">
                                 <div className="image-container">

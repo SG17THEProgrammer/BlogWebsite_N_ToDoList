@@ -49,7 +49,7 @@ try {
 })
 
 const resData = await res.json() ;
-console.log(resData)
+// console.log(resData)
 
 if(res.ok){
   setBlogUser(resData.bloguser[0]) 
@@ -128,7 +128,7 @@ const topPosts = allBlogs
       <br />
       <h5>{postDisplay?.story}</h5>
       <p>{timeAgo} ({dateNday}) ,  {format(new Date(postDisplay?.postedOn), 'h:mm a')}</p>
-      <div>
+      <div className='postImgDiv'>
         <img src={postDisplay?.image} alt="blog_image" className="fakeimg" />
       </div> 
       <div dangerouslySetInnerHTML={{__html: marked(markdownContent) }}  style={{marginTop:"20px"}}/>

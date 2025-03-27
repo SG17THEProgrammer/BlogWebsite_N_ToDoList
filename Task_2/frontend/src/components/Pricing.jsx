@@ -11,9 +11,9 @@ const Pricing = () => {
     const {pricingSectionRef} = useScroll()
   const [plans , setPlans] = useState() 
 
-  const getPlans = async() =>{
+  const getAllPlans = async() =>{
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/getPlans`,{
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/getAllPlans`,{
                 method: 'GET'
             })
             
@@ -25,7 +25,7 @@ const Pricing = () => {
     }
   }
   useEffect(() =>{
-    getPlans()
+    getAllPlans()
   },[])
 
 
@@ -34,8 +34,8 @@ const Pricing = () => {
      `${import.meta.env.VITE_BACKEND_API}/createSession`,
       {
         priceId,
-        // email:user?.email
-        email:"shray3@gmail.com"
+        email:user?.email
+        // email:"shray3@gmail.com"
       }
     );
 

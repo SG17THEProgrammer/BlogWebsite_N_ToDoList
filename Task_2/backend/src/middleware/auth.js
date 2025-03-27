@@ -3,6 +3,7 @@ const User = require("../models/userSchema");
 
 const auth = async (req, res, next) => {
   const token = req.header("Authorization");
+  // console.log(token)
   if (!token) { 
     return res
       .status(401)
@@ -33,6 +34,7 @@ const auth = async (req, res, next) => {
     // res.send(200).json({msg:"success"})
   
   } catch (error) {
+    console.log(error);
     return res.status(401).json({ message: "Unauthorized. Invalid token." });
   }
 }

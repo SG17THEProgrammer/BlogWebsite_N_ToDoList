@@ -76,14 +76,22 @@
     color: #888;
     margin-bottom: 20px;
   }
+
+  .postImgDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   
   .leftcolumn .fakeimg {
     background-color: #e1e1e1;
-    width: 100%;
-    height: 200px;
+    width: 80%;
+    height: 60vh;
     border-radius: 8px;
     margin-bottom: 15px;
   }
+
+
   
   .leftcolumn p {
     font-size: 1em;
