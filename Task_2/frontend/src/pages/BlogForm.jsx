@@ -6,7 +6,7 @@ import 'react-quill/dist/quill.snow.css';
 import Navbar from '../components/Navbar.jsx'
 import { RiGeminiFill } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
-import { useAuth } from './Auth.jsx';
+import { useAuth } from '../components/Auth.jsx';
 import { ImagetoBase64 } from '../utility/ImagetoBase64.js';
 // import Markdown from 'react-markdown'
 import { toast } from 'react-toastify';
@@ -14,11 +14,11 @@ import Loader from '../components/Loader.jsx'
 // import marked from 'marked';
 import { Remarkable } from 'remarkable';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import {parse} from 'marked'
 
 
-
-const BlogForm = ({ motive, allBlogs }) => {
-  const { user } = useAuth()
+const BlogForm = ({ motive, allBlogs, dash }) => {
+  const { user ,plan} = useAuth()
   const navigate = useNavigate()
 
 
@@ -56,42 +56,49 @@ const BlogForm = ({ motive, allBlogs }) => {
     authorImage: '',
     tags: [],
     image: '',
-    category:''
+    category: '',
+    access:plan
   });
 
-    const { id } = useParams()
-  
-    const blogInfo = allBlogs?.filter((elem) => elem._id === id)[0];
+  const { id } = useParams()
 
-    
-    const [blogData, setBlogData] = useState(true)
+  const blogInfo = allBlogs?.filter((elem) => elem._id === id)[0];
 
-    if (blogInfo && blogData) {
-      setTags(blogInfo.tags)
-    
-      setFormData({
-        ...formData,
-        title: blogInfo.title,
-        story: blogInfo.story,
-        description: blogInfo?.description,
-        authorImage: blogInfo.authorImage, 
-        tags: blogInfo.tags,
-        image: blogInfo.image,
-        category: blogInfo.category,
-      });
 
-      setBlogData(false);
-    }
- 
+  const [blogData, setBlogData] = useState(true)
+
+  if (blogInfo && blogData) {
+    setTags(blogInfo.tags)
+
+    setFormData({
+      ...formData,
+      title: blogInfo.title,
+      story: blogInfo.story,
+      description: blogInfo?.description,
+      authorImage: blogInfo.authorImage,
+      tags: blogInfo.tags,
+      image: blogInfo.image,
+      category: blogInfo.category,
+    });
+
+    setBlogData(false);
+  }
+
   useEffect(() => {
-      setFormData({
-        name: user.name,
-        email: user.email,
-        authorImage: user.image || "https://images.unsplash.com/photo-1567446537708-ac4aa75c9c28?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      });
+    setFormData({
+      name: user.name,
+      email: user.email,
+      authorImage: user.image || "https://images.unsplash.com/photo-1567446537708-ac4aa75c9c28?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      title: '',
+      story: '',
+      description: '',
+      tags: [],
+      image: '',
+      category: ''
+    });
   }, [user])
 
-// console.log(formData)
+  // console.log(formData)
   const handleKeyPress = (e) => {
     const inputValue = newTag.trim();
     if (e.key === 'Enter' && inputValue !== '') {
@@ -118,16 +125,17 @@ const BlogForm = ({ motive, allBlogs }) => {
       tags: updatedTags,
     });
   };
+  // console.log(formData?.tags?.length == 0);
 
   const generateStory = async () => {
     setLoader(true)
     let dataToSend
-    if (formData.title == '') {
+    if (formData?.title == '') {
       toast.error("Enter title")
       setLoader(false)
       return;
     }
-    else if (formData.tags.length == 0) {
+    else if (formData?.tags?.length == 0) {
       toast.error("Enter atleast one tag")
       setLoader(false)
       return;
@@ -151,13 +159,15 @@ const BlogForm = ({ motive, allBlogs }) => {
 
       const answer = await response.json()
 
+      // console.log(parse(answer));
+
       const md = new Remarkable();
       const htmlContent = md.render(answer);
 
-      // console.log(answer);
+      // console.log(htmlContent);
       setFormData({
         ...formData,
-        story: answer
+        story: parse(answer)
       })
 
     } catch (error) {
@@ -203,14 +213,14 @@ const BlogForm = ({ motive, allBlogs }) => {
       })
 
       const answer = await response.json()
-      // const htmlContent = marked(answer);
+      // console.log(answer);
 
       const md = new Remarkable();
       const htmlContent = md.render(answer);
-
+// console.log(htmlContent);
       setFormData({
         ...formData,
-        description: htmlContent
+        description: parse(answer)
       })
 
     } catch (error) {
@@ -232,17 +242,32 @@ const BlogForm = ({ motive, allBlogs }) => {
     });
   }
 
-  const handleQuillChange = (value) => {
-    if(value=="<p><br></p>" && blogInfo){
+  const handleQuillChangeDescrip = (value) => {
+    if (value == "<p><br></p>" && blogInfo) {
       setFormData({
         ...formData,
         description: blogInfo.description,
       });
     }
-    else{
+    else {
       setFormData({
         ...formData,
         description: value,
+      });
+    }
+  }
+
+  const handleQuillChangeStory = (value) => {
+    if (value == "<p><br></p>" && blogInfo) {
+      setFormData({
+        ...formData,
+        story: blogInfo.story,
+      });
+    }
+    else {
+      setFormData({
+        ...formData,
+        story: value,
       });
     }
   }
@@ -274,7 +299,11 @@ const BlogForm = ({ motive, allBlogs }) => {
         body: JSON.stringify(formData)
       })
 
+      console.log(response);
+
+
       const resData = await response.json();
+      console.log(resData);
 
       if (response.ok) {
 
@@ -286,6 +315,7 @@ const BlogForm = ({ motive, allBlogs }) => {
         })
 
         setTags([])
+
 
         toast.success(resData.message);
 
@@ -304,18 +334,18 @@ const BlogForm = ({ motive, allBlogs }) => {
   }
 
 
-  const editPost = async()=>{
+  const editPost = async () => {
     try {
       console.log(formData)
 
       const dataToSend = {
         title: formData.title,
-    story: formData.story,
-    description: formData.description,
-    authorImage: formData.authorImage,
-    tags:formData.tags,
-    image: formData.image,
-    category:formData.category
+        story: formData.story,
+        description: formData.description,
+        authorImage: formData.authorImage,
+        tags: formData.tags,
+        image: formData.image,
+        category: formData.category
       }
 
       const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/editPost`, {
@@ -323,16 +353,16 @@ const BlogForm = ({ motive, allBlogs }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({postId:id, postData:dataToSend})
+        body: JSON.stringify({ postId: id, postData: dataToSend })
       })
 
       const resData = await res.json()
-      if(res.ok){
+      if (res.ok) {
         toast.success(resData.message)
         navigate('/yourPosts')
         window.location.reload()
       }
-      else{
+      else {
         toast.error(resData.message)
       }
 
@@ -343,9 +373,9 @@ const BlogForm = ({ motive, allBlogs }) => {
 
   return (
     <>
-      <Navbar></Navbar>
-      <div className='postdiv'>
-        <h1 className='h1'>{motive=="Create A Post" ?"Create A Post" : "Edit Post"}</h1>
+      {dash === undefined ? <Navbar></Navbar> : ""}
+      <div className={dash ? 'dash' : 'postdiv'}>
+        <h1 className='h1'>{motive == "Create A Post" ? "Create A Post" : "Edit Post"}</h1>
         <label htmlFor="file" className='label' style={{ marginBottom: "10px", textDecoration: "underline", color: "skyblue", cursor: "pointer" }}>Upload an Image</label>
 
         <img src={formData?.image || "https://images.unsplash.com/photo-1567446537708-ac4aa75c9c28?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} alt="blog_image" className='img5' />
@@ -374,38 +404,56 @@ const BlogForm = ({ motive, allBlogs }) => {
           <option value="Business & Entrepreneurship">Business & Entrepreneurship</option>
         </select>
 
-        <label htmlFor="tags" className='label'>Tags <span className='instruction'>(Press Enter to add a tag)</span></label>
-        <input type="text" className='inpTxt' onChange={handleTags}
-          value={newTag} name='tags' onKeyDown={handleKeyPress} placeholder='Enter Tags' />
+        <label htmlFor="tags" className='label'>
+          Tags <span className='instruction'>(Press Enter to add a tag)</span>
+        </label>
+
+        <input
+          type="text"
+          className='inpTxt'
+          onChange={handleTags}
+          value={newTag}
+          name='tags'
+          onKeyDown={handleKeyPress}
+          placeholder='Enter Tags'
+        />
 
         <div className='tagdiv'>
-          {tags?.map((elem, idx) => {
-            return <>
-              <div className='tags' key={idx}>{elem} &nbsp; <RxCross2 style={{ marginTop: "-1px", cursor: "pointer" }} onClick={() => deleteTag(elem)} /></div>
-            </>
-          })}
+          {tags?.map((elem, idx) => (
+            <div className='tags' key={idx}>
+              {elem} &nbsp;
+              <RxCross2
+                style={{ cursor: "pointer", marginTop: "0px" }}
+                onClick={() => deleteTag(elem)}
+              />
+            </div>
+          ))}
         </div>
+
         <br /><br />
 
         <div className='aidiv'>
           <label htmlFor="story" className='label'>Story</label>
           <button className='aibtn' onClick={generateStory}><RiGeminiFill /> Generate using AI</button>
         </div>
-        <input type="text" className='inpTxt' placeholder='Write/Generate your Story' onChange={handleInput} name='story' value={formData.story} />
+       
+        <ReactQuill theme="snow" modules={modules} formats={formats} className='storyReactQuill' placeholder='Write/Generate your story' name='story' onChange={handleQuillChangeStory} value={formData.story}></ReactQuill>
 
         <br />
+
         <div className='aidiv'>
           <label htmlFor="description" className='label'>Description</label>
           <button className='aibtn' onClick={generateDescription}><RiGeminiFill /> Generate using AI</button>
         </div>
 
-        <ReactQuill theme="snow" modules={modules} formats={formats} className='reactquill' placeholder='Write/Generate your blog' name='description' onChange={handleQuillChange} value={formData.description} />
+        <ReactQuill theme="snow" modules={modules} formats={formats} className='reactquill' placeholder='Write/Generate your blog' name='description' onChange={handleQuillChangeDescrip} value={formData.description} />
         <br></br>
 
-        {motive=="Create A Post" ? <button className='btn2' onClick={handleSubmit}>Create Post</button>:<button className='btn2' onClick={editPost}>Edit Post</button>}
+        {motive == "Create A Post" ? <button className='btn2' onClick={handleSubmit}>Create Post</button> : <button className='btn2' onClick={editPost}>Edit Post</button>}
 
 
       </div>
+      <br />
       {loader ? <Loader></Loader> : ""}
     </>
   )

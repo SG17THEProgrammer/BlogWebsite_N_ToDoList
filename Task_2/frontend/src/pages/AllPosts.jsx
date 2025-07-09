@@ -1,43 +1,43 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from './Navbar'
+import Navbar from '../components/Navbar'
 import '../css/AllPosts.css'
 import Box from '@mui/material/Box';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from './Auth';
+import { useAuth } from '../components/Auth';
 const AllPosts = () => {
-    const {plan , articles} = useAuth()
-    
-    const [allBlogs, setAllBlogs] = useState()
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [filteredBlogs, setFilteredBlogs] = useState(allBlogs);
+    const {plan , articles,allBlogs} = useAuth();
+
+    // const [allBlogs, setAllBlogs] = useState(allBlogs)
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [filteredBlogs, setFilteredBlogs] = useState(articles);
     const [searchQuery, setSearchQuery] = useState("");
 
-    const getAllBlogs = async () => {
-        try {
-            const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/getAllBlogs`, {
-                method: 'GET'
-            })
+        // const getAllBlogs = async () => {
+        //     try {
+        //         const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/getAllBlogs`, {
+        //             method: 'GET'
+        //         })
 
-            const resData = await res.json();
+        //         const resData = await res.json();
 
-            setAllBlogs(resData.allBlogs)
+        //         setAllBlogs(resData.allBlogs)
 
-        } catch (error) {
-            console.log(error)
-        }
-    }
+        //     } catch (error) {
+        //         console.log(error)
+        //     }
+        // }
 
-    useEffect(() => {
-        getAllBlogs();
-    }, [])
+        // useEffect(() => {
+        //     getAllBlogs();
+        // }, [])
 
     const categories = [...new Set(allBlogs?.map((blog) => blog.category))];
     // console.log(categories)
 
   const handleCategoryClick = (category) => {
-    const newCategory = category === selectedCategory ? null : category;
+    const newCategory = category === selectedCategory ? '' : category;
     setSelectedCategory(newCategory);
   };
 
@@ -47,7 +47,7 @@ const AllPosts = () => {
   };
 
   useEffect(() => {
-    const filtered = allBlogs?.filter((blog) => {
+    const filtered = articles?.filter((blog) => {
 
       const matchesCategory = selectedCategory
         ? blog.category === selectedCategory
@@ -63,8 +63,15 @@ const AllPosts = () => {
     });
 
     setFilteredBlogs(filtered);
-  }, [searchQuery, selectedCategory, allBlogs]); 
+  }, [searchQuery, selectedCategory]); 
 
+  const handlePremPost=()=>{
+    try {
+        console.log("clicked");
+    } catch (error) {
+        
+    }
+  }
         
     return (
         <>
@@ -76,8 +83,7 @@ const AllPosts = () => {
 
 
                 <div>
-                    <div className="link-container">
-                        <NavLink className="hidden-md-block relative" to='/premiumPosts'>
+                    <div className="link-container" onClick={handlePremPost}>
                             <svg viewBox="0 0 200 200" width="100" height="100" className="text-lg tracking-widest rotate-svg">
                                 <path id="circlePath" fill="none" d="M 100, 100 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0" />
                                 <text>
@@ -98,7 +104,6 @@ const AllPosts = () => {
                                     <polyline points="9 6 18 6 18 15" />
                                 </svg>
                             </button>
-                        </NavLink>
                     </div>
                 </div>
 
@@ -120,8 +125,8 @@ const AllPosts = () => {
 
                 <Box sx={{ width: "90vw", height: "100vh", overflowY: 'scroll', marginTop: "20px" }} className="box">
                     <ImageList variant="masonry" cols={3} gap={8} >
-                        {filteredBlogs?.map((item, idx) => (
-                            <NavLink to={`/completePost/${item._id}`}><ImageListItem key={idx} className="image-item">
+                        {filteredBlogs?.length>0 ? filteredBlogs?.map((item, idx) => (
+                            <NavLink to={`/completePost/${item._id}`}><ImageListItem key={idx} className="image-item" children={idx}>
                                 <div className="image-container">
                                     <img
                                         src={item.image.startsWith('data:image') ? item.image : `${item.image}?w=248&fit=crop&auto=format`}
@@ -143,7 +148,7 @@ const AllPosts = () => {
                                 </div>
                             </ImageListItem>
                             </NavLink>
-                        ))}
+                        )):<h5 className='error' style={{textAlign:"center", width: "90vw" ,overflow:"hidden"}}>No blogs found</h5>}
                     </ImageList>
                 </Box>
             </div>

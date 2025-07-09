@@ -8,6 +8,8 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState("");
     const [plan , setPlan] = useState()
     const [articles, setArticles] = useState()
+    const [allBlogs, setAllBlogs] = useState()
+    
 
     const storeTokensInLS = (serverToken) => {
         setToken(serverToken)
@@ -58,7 +60,6 @@ export const AuthProvider = ({ children }) => {
         // email:"shray3@gmail.com"
        }
       );
-
       setPlan(response.plan)
       setArticles(response.article)
     } catch (error) {
@@ -66,14 +67,31 @@ export const AuthProvider = ({ children }) => {
     }
   }
   
-  useEffect(()=>{
+      const getAllBlogs = async () => {
+          try {
+              const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/getAllBlogs`, {
+                  method: 'GET'
+              })
+  
+              const resData = await res.json();
+  
+              setAllBlogs(resData.allBlogs)
+  
+          } catch (error) {
+              console.log(error)
+          }
+      }
+  
+
+      useEffect(()=>{
+    getAllBlogs();
     userAuthentication();
     getPlan()
   },[isLoggedIn])
 
 return (
     <>
-    <AuthContext.Provider value={{ isLoggedIn, storeTokensInLS , user , LogoutUser , plan , articles}}>
+    <AuthContext.Provider value={{ isLoggedIn, storeTokensInLS , user , LogoutUser , plan , articles,allBlogs}}>
       {children}
     </AuthContext.Provider>
     </>

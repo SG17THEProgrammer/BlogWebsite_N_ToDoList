@@ -3,12 +3,13 @@
 .badges {
     position:relative;
     /* margin:140px auto; */
-    width:160px;
+    width:260px;
     height:100px;
     background:#552F87;
     border-radius:100%;
     color: #FFF;
     line-height: 25px;
+    padding: 0 20px;
     text-align: center;
     text-transform: uppercase;
     font-family: "Open Sans",sans-serif;
@@ -83,7 +84,7 @@
 .badges:after{
     content:'';
     position:absolute;
-    top:-70px;left:79px;
+    top:-70px;left:125px;
     width:2px;height:81px;
     border-radius:0%;
     background:#000;

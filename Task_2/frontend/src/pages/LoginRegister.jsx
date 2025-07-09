@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import '../css/LoginRegister.css'
 import { ImagetoBase64 } from '../utility/ImagetoBase64'
-import { useAuth } from './Auth'
+import { useAuth } from '../components/Auth'
 import { IoEyeSharp } from "react-icons/io5";
 import { FaEyeSlash } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import Navbar from './Navbar';
+import Navbar from '../components/Navbar';
 
 const LoginRegister = () => {
   const { storeTokensInLS } = useAuth();

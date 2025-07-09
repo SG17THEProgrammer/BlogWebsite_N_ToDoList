@@ -33,8 +33,8 @@ const createSession = async (req, res) => {
             quantity: 1,
           },
         ],
-        success_url: "http://localhost:3000/articles",
-        cancel_url: "http://localhost:3000/article-plans",
+        success_url: "http://localhost:5000/profile",
+        cancel_url: "http://localhost:5000/error",
         customer: user.stripeCustomerId,
         // customer_email: email,  
   
@@ -80,20 +80,33 @@ const createSession = async (req, res) => {
             apiKey: process.env.STRIPE_SECRET_KEY,
           }
         );
-      
-        if (!subscriptions.data.length) return res.json([]);
+      // console.log(subscriptions  ,  process.env.STRIPE_SECRET_KEY);
+        if (!subscriptions.data.length) return res.json({plan:"Free" , article : []});
       
         const plan = subscriptions.data[0].plan.nickname;
         
-        if (plan === "Basic") {
-          const articles = await Blogs.find({ access: "Basic" });
+        // if (plan === "Free") {
+        //   const articles = await Blogs.find({ access: "Free" });
+        //   return res.json({plan:plan , article : articles});
+        // }
+
+
+         if (plan === "Basic") {
+          const articles = await Blogs.find( {access: { $in: ["Basic", "Free"]}});
+
           return res.json({plan:plan , article : articles});
-        } else if (plan === "Standard") {p
+
+        } 
+        
+        else if (plan === "Standard") {
           const articles = await Blogs.find({
-            access: { $in: ["Basic", "Standard"] },
+            access: { $in: ["Free","Basic", "Standard"] },
           });
           return res.json({plan:plan , article : articles});
-        } else {
+
+        } 
+        
+        else {
           const articles = await Blogs.find({});
           return res.json({plan:plan , article : articles});
         }

@@ -27,6 +27,10 @@ const Comment = ({ blogId, postDisplay }) => {
         if(isLoggedIn) {
 
         try {
+            if(comments?.text==''){
+                toast.error("Write something!!")
+                return;
+            } 
             const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/comment`, {
                 method: "POST",
                 headers: {
@@ -150,7 +154,7 @@ const Comment = ({ blogId, postDisplay }) => {
 
             {/* comment div  */}
             {allComments?.length>0?<h5 style={{ margin: "60px 0 20px 60px", textDecoration: "underline" }}>{allComments.length} comments</h5>: <h5 style={{ margin: "60px 0 20px 60px", textDecoration: "underline" ,textAlign:"center"}}>No comments yet!!</h5>}
-            <div>
+            <div style={{marginBottom:"20px"}}>
 
                 {allComments?.map((elem, idx) => {
                     return <><div className='commDiv' key={idx}>

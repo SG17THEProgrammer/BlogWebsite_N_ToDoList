@@ -38,7 +38,7 @@ const avgRating = total / ratings.length;
     <div className="blog-tags">
       <ul>
         {tags?.map((elem,idx)=>{
-         return  <li className='a1'>{elem}</li>
+         return  <li className='a1' key={idx}>{elem}</li>
         })}
 
       </ul>

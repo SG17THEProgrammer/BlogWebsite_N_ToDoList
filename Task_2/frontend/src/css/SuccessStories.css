@@ -100,3 +100,15 @@ padding: 50px 0 ;
 	font-size: 12px;
 	margin-top: 2px;
 }
+
+@media (max-width: 1030px) {
+  .gridbox{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+  }
+  .l-card{
+	width: 80%;
+  }
+}

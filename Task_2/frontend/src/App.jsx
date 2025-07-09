@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Home from './components/Home'
-import LoginRegister from "./components/LoginRegister";
-import BlogForm from './components/BlogForm';
-import YourPosts from './components/YourPosts';
-import FullPost from './components/FullPost';
-import UserProfile from './components/UserProfile';
-import AllPosts from './components/AllPosts';
-import Contact from './components/Contact';
+import Home from './pages/Home'
+import LoginRegister from "./pages/LoginRegister";
+import BlogForm from './pages/BlogForm';
+import YourPosts from './pages/YourPosts';
+import FullPost from './pages/FullPost';
+import UserProfile from './pages/UserProfile';
+import AllPosts from './pages/AllPosts';
+import Contact from './pages/Contact';
 import GoToTopButton from './components/GoToTopButton';
+import Dashboard from './pages/DashBoard/Dashboard';
 
 const App = () => {
    const [allBlogs , setAllBlogs ] = useState();
@@ -49,6 +50,7 @@ const App = () => {
         <Route path='/profile' element={<UserProfile></UserProfile>}></Route>
         <Route path='/allPosts' element={<AllPosts></AllPosts>}></Route>
         <Route path='/contact' element={<Contact></Contact>}></Route>
+        <Route path='/dashboard' element={<Dashboard></Dashboard>}></Route>
       </Routes>
       </BrowserRouter>  
     </>

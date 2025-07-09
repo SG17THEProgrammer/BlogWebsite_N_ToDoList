@@ -128,6 +128,29 @@ const getAllUsers = async (req, res) => {
     }
 }
 
+const delUser = async (req, res) => {
+    try {
+        const {userId} = req.body ; 
+
+    const user = await User.findById({_id:userId})
+  if(!user){
+    res.status(400).json({message:"User not found"})
+    return;
+  }
+  await User.findByIdAndDelete({_id:userId});
+
+
+  const allUsers = await User.find({})
+
+  res.status(200).json({message:"User deleted successfully",
+    allUsers : allUsers
+  })
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 const updateProfile = async (req, res) => {
     try {
         const { userId, userInfo } = req.body;
@@ -245,4 +268,4 @@ const updateProfile = async (req, res) => {
     }
 }
 
-module.exports = {register,getAllUsers,login,getUser,updateProfile}
+module.exports = {register,getAllUsers,login,getUser,updateProfile,delUser}

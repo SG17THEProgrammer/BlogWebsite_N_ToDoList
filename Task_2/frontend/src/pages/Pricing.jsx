@@ -4,10 +4,10 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import { useScroll } from '../context/ScrollContext';
 import axios from "axios";
-import { useAuth } from './Auth';
+import { useAuth } from '../components/Auth';
 
 const Pricing = () => {
-  const {user} = useAuth()
+  const {user,allBlogs,plan} = useAuth()
     const {pricingSectionRef} = useScroll()
   const [plans , setPlans] = useState() 
 
@@ -41,7 +41,6 @@ const Pricing = () => {
 
     window.location.href = response.url;
   };
-
   return (
     <>
     <div style={{height:"5vh"}}  ref={pricingSectionRef}></div>
@@ -53,12 +52,20 @@ const Pricing = () => {
     <h1 className="title">AFFORDABLE PRICES</h1>
     <br />
             <p>This is the simplest way to buy great content for your website. Cancel anytime. Just select a plan below to get started.</p>
+            
+
+            <h5>Right Now you have <b className='blink1'>{plan}</b> plan</h5>
     <div className="pricing-container">
 
     
-      {plans?.map((elem , idx)=>{
+      {plans?.reverse()?.map((elem , idx)=>{
+        let noOfPosts=0
         const {nickname ,unit_amount} = elem
-        return <>
+        if(nickname==='Basic') noOfPosts=4
+        else if(nickname==='Standard') noOfPosts=8
+        else noOfPosts=`All (${allBlogs?.length})`
+        
+        return (
         <div className="pricing-card hobby" key={idx}>
         {nickname==="Standard" ?  <div className="card-header">
           Most Popular
@@ -71,7 +78,7 @@ const Pricing = () => {
             <ul>
             <div className='feature'>
             <IoMdCheckmarkCircleOutline className='iconCol'/>
-              <li className="feature-item">No setup</li>
+              <li className="feature-item">{noOfPosts} free posts</li>
             </div>
             <div className='feature'>
             <IoMdCheckmarkCircleOutline className='iconCol'/>
@@ -84,11 +91,11 @@ const Pricing = () => {
             </ul>
           </div>
           <div className="card-action">
-            <button className="select-btn" onClick={()=>createSession(elem.id)}>Select</button>
+            <button className="select-btn" onClick={()=>createSession(elem.id)} disabled={plan===nickname}>Select</button>
           </div>
         </div>
       </div>
-        </>
+      )
       })}
 
 

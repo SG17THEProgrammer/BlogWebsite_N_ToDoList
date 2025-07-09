@@ -19,7 +19,7 @@ const Working = ({action,reference}) => {
           id:"2" ,
           image:"https://plus.unsplash.com/premium_vector-1721296175362-c52a73ff127b?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
           title:"YOU POST",
-          description:"GO nuts ,Share it across social media , Build your Presence"
+          description:"GO nuts, Share it across social media, Build your Presence"
       },
        
     ]
@@ -50,7 +50,7 @@ const Working = ({action,reference}) => {
 
   return (
     <>
-     <div style={{ height: '12vh' }}  ref={reference} />
+     <div style={{ height: '10vh' }}  ref={reference} />
         <div className='topdiv'>
             <p className='heading'>{action=="howItWorks"?"SNEEK A PEAK":"WHY CHOOSE US"}</p>
             <h1 style={{borderBottom:"3px solid black" }}>{action==="howItWorks"?"HOW IT WORKS":"UNIQUELY DIFFERENT"}</h1>

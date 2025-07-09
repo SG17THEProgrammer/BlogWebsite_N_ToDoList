@@ -1,27 +1,28 @@
 import React, { useState } from 'react'
-import { useAuth } from './Auth'
+import { useAuth } from '../components/Auth'
 import '../css/UserProfile.css'
-import Navbar from './Navbar'
+import Navbar from '../components/Navbar'
 import { toast } from 'react-toastify'
 import { ImagetoBase64 } from '../utility/ImagetoBase64'
-import Badge from './Badge'
+import Badge from '../components/Badge'
 
 const UserProfile = () => {
-  const {user,plan} = useAuth()
+  const {user,plan,allBlogs} = useAuth()
 
 // console.log(user)
 // console.log(plan)
 
-let posts = 0
 
+    let msg = 0
     if (plan === "Basic") {
-        posts = 10
-    } else if (plan === "Standard") {
-        posts = 50
+msg = 'For more and better posts get our Standard subscription'
+    } else if (plan === "Standard") {  
+      msg = 'For all posts and advanced content get our Premium subscription'
     }
-    else if (plan === "Premium") {
-        posts = 100
+    else{
+      msg='Voila!! Enjoy our website with premium features'
     }
+
 
 
 const [userData, setUserData] = useState(true)
@@ -129,7 +130,7 @@ const [userInfo , setUserInfo] = useState({
         </div>
 
 
-        <Badge posts={posts}></Badge>
+        <Badge msg={msg}></Badge>
 
 
       </div>

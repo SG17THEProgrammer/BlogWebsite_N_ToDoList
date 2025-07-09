@@ -1,0 +1,200 @@
+[{
+  "_id": {
+    "$oid": "6767e2e553042194ee7ad226"
+  },
+  "id": 1,
+  "name": "John Doe",
+  "userImage": "https://example.com/users/john.jpg",
+  "media": "https://example.com/blog1-image.jpg",
+  "mediaType": "image",
+  "title": "Exploring the Wonders of Nature",
+  "description": "A journey through some of the most beautiful natural landscapes around the world.",
+  "tags": [
+    "nature",
+    "travel",
+    "adventure"
+  ],
+  "postedOn": "2024-11-10T08:30:00Z",
+  "comments": [
+    {
+      "author": "Alice",
+      "userImage": "https://example.com/users/alice.jpg",
+      "rating": 5,
+      "text": "Amazing post! I love the landscapes."
+    },
+    {
+      "author": "Bob",
+      "userImage": "https://example.com/users/bob.jpg",
+      "rating": 4,
+      "text": "Great pictures, really inspiring!"
+    }
+  ],
+  "rating": 4.5
+},
+{
+  "_id": {
+    "$oid": "6767e2e553042194ee7ad227"
+  },
+  "id": 2,
+  "name": "Jane Smith",
+  "userImage": "https://example.com/users/jane.jpg",
+  "media": "https://example.com/blog2-video.mp4",
+  "mediaType": "video",
+  "title": "Tech Innovations in 2024",
+  "description": "A deep dive into the most exciting tech innovations to watch out for in the coming year.",
+  "tags": [
+    "technology",
+    "innovation",
+    "advancement"
+  ],
+  "postedOn": "2024-11-15T10:00:00Z",
+  "comments": [
+    {
+      "author": "Charlie",
+      "userImage": "https://example.com/users/charlie.jpg",
+      "rating": 3,
+      "text": "Can't wait to see these technologies in action."
+    },
+    {
+      "author": "Dave",
+      "userImage": "https://example.com/users/dave.jpg",
+      "rating": 4,
+      "text": "This is very insightful, looking forward to more!"
+    }
+  ],
+  "rating": 3.5
+},
+{
+  "_id": {
+    "$oid": "6767e2e553042194ee7ad228"
+  },
+  "id": 3,
+  "name": "Sarah Lee",
+  "userImage": "https://example.com/users/sarah.jpg",
+  "media": "https://example.com/blog3-podcast.mp3",
+  "mediaType": "audio",
+  "title": "The Future of Remote Work",
+  "description": "Discussing the trends and technologies shaping the future of remote work.",
+  "tags": [
+    "work",
+    "remote",
+    "future"
+  ],
+  "postedOn": "2024-11-20T12:00:00Z",
+  "comments": [
+    {
+      "author": "Eve",
+      "userImage": "https://example.com/users/eve.jpg",
+      "rating": 4,
+      "text": "Very thought-provoking! Remote work is the future."
+    },
+    {
+      "author": "Frank",
+      "userImage": "https://example.com/users/frank.jpg",
+      "rating": 5,
+      "text": "Interesting points, especially about the tools used for collaboration."
+    }
+  ],
+  "rating": 4.5
+},
+{
+  "_id": {
+    "$oid": "6767e2e553042194ee7ad229"
+  },
+  "id": 4,
+  "name": "Mark Spencer",
+  "userImage": "https://example.com/users/mark.jpg",
+  "media": "https://example.com/blog4-image.jpg",
+  "mediaType": "image",
+  "title": "A Glimpse into Space Exploration",
+  "description": "The latest advancements in space travel and exploration, with a look at upcoming missions to Mars and beyond.",
+  "tags": [
+    "space",
+    "exploration",
+    "NASA",
+    "mars"
+  ],
+  "postedOn": "2024-11-25T14:00:00Z",
+  "comments": [
+    {
+      "author": "Olivia",
+      "userImage": "https://example.com/users/olivia.jpg",
+      "rating": 4,
+      "text": "Space exploration is so exciting, can't wait for the Mars missions!"
+    },
+    {
+      "author": "James",
+      "userImage": "https://example.com/users/james.jpg",
+      "rating": 4,
+      "text": "The future is definitely in space!"
+    }
+  ],
+  "rating": 4
+},
+{
+  "_id": {
+    "$oid": "6767e2e553042194ee7ad22a"
+  },
+  "id": 5,
+  "name": "Emma Clark",
+  "userImage": "https://example.com/users/emma.jpg",
+  "media": "https://example.com/blog5-video.mp4",
+  "mediaType": "video",
+  "title": "The Rise of Sustainable Fashion",
+  "description": "How sustainable fashion is changing the way we look at clothing and its impact on the environment.",
+  "tags": [
+    "fashion",
+    "sustainability",
+    "environment"
+  ],
+  "postedOn": "2024-12-01T09:30:00Z",
+  "comments": [
+    {
+      "author": "Sophia",
+      "userImage": "https://example.com/users/sophia.jpg",
+      "rating": 5,
+      "text": "Sustainable fashion is definitely the future!"
+    },
+    {
+      "author": "Liam",
+      "userImage": "https://example.com/users/liam.jpg",
+      "rating": 5,
+      "text": "I love how sustainable fashion is becoming more mainstream."
+    }
+  ],
+  "rating": 5
+},
+{
+  "_id": {
+    "$oid": "6767e2e553042194ee7ad22b"
+  },
+  "id": 6,
+  "name": "Michael Brown",
+  "userImage": "https://example.com/users/michael.jpg",
+  "media": "https://example.com/blog6-audio.mp3",
+  "mediaType": "audio",
+  "title": "Podcast: The Evolution of Artificial Intelligence",
+  "description": "A podcast discussing the evolution and potential future impact of artificial intelligence on various industries.",
+  "tags": [
+    "AI",
+    "technology",
+    "future",
+    "podcast"
+  ],
+  "postedOn": "2024-12-05T11:00:00Z",
+  "comments": [
+    {
+      "author": "Rachel",
+      "userImage": "https://example.com/users/rachel.jpg",
+      "rating": 5,
+      "text": "AI is definitely changing the world, excited for what's to come!"
+    },
+    {
+      "author": "Chris",
+      "userImage": "https://example.com/users/chris.jpg",
+      "rating": 4,
+      "text": "Great podcast, learned a lot about AI!"
+    }
+  ],
+  "rating": 4.5
+}]

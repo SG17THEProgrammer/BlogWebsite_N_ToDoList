@@ -1,15 +1,15 @@
 import React from 'react'
 import '../css/Badge.css'
-const Badge = ({ plan ,posts}) => {
+const Badge = ({ plan ,msg}) => {
 
     
 
     return (
         <div>
-            <div class="badges"><br />
+            <div className="badges"><br />
                 {plan ? <><span>Your'e a <br /><b> {plan}</b> user</span><br /></>
                     : <p>
-                        <span>You'll get <br /><strong>{posts}<sup>*</sup> </strong> posts</span>
+                        <span style={{fontSize:"13px"}}>{msg}</span>
                     </p>}
             </div>
         </div>

@@ -53,6 +53,10 @@ const blogSchema = new mongoose.Schema({
     type: [commentSchema], 
     default: [],
   },
+  likes:{
+    type: [String],
+    default: []  
+},
     authorImage: {
         type: String,
         required: true

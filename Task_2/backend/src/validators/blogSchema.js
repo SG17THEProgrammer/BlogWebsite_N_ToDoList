@@ -1,42 +1,51 @@
 const { z } = require('zod');
 
-const blogSchema = z.object({    
-    name:z.string().trim() , 
-    email:z.string().trim() , 
-    category:z.string().trim() , 
+const blogSchema = z.object({
+    name: z
+        .string({ required_error: "Name is required" })
+        .trim()
+        .nonempty({ message: "Name is required" }),
+
+    email: z
+        .string({ required_error: "Email is required" })
+        .trim()
+        .nonempty({ message: "Email is required" }),
+
+    category: z
+        .string({ required_error: "Category is required" })
+        .trim()
+        .nonempty({ message: "Category is required" }),
     // rating:z.array(), 
     // comments:z.array(), 
     title: z
-        .string()
-        .min(2, { message: "Title is required" })
-        .max(100, { message: "Title must be less than 100 characters" })
-        .trim(),
+        .string({ required_error: "Title is required" })
+        .trim()
+        .min(2, { message: "Title must be at least 2 characters" })
+        .max(100, { message: "Title must be less than 100 characters" }),
 
     story: z
-        .string()
-        .min(2, { message: "Story is required" })
-        .max(1000, { message: "Story must be less than 1000 characters" })
-        .trim(),
+        .string({ required_error: "Story is required" })
+        .trim()
+        .nonempty({ message: "Story is required" }),
 
     description: z
-        .string()
-        .min(100, { message: "Description is required" })
-        .max(4000, { message: "Description must be less than 4000 characters" })
-        .trim(),
+        .string({ required_error: "Description is required" })
+        .trim()
+        .nonempty({ message: "Description is required" }),
 
     image: z
-        .string()
-        .url({ message: "Image required" })
-        .trim(),
+        .string({ required_error: "Image is required" })
+        .trim()
+        .nonempty({ message: "Image is required" }),
 
     authorImage: z
         .string()
-        .url({ message: "Author Image required" })
+        .url({ message: "Author Image is required" })
         .trim(),
 
     tags: z
-        .array(z.string().min(2, { message: "Each tag must be a valid string" }))
-        .min(1, { message: "At least one tag is required" }),
+        .array(z.string(), { required_error: "Tags are required" })
+        .nonempty({ message: "Please add at least one tag" }),
 
     postedOn: z
         .date()

@@ -2,15 +2,15 @@
 
 .container1 {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 2 equal-width columns */
+    grid-template-columns: repeat(3, 1fr); 
     padding: 30px;
     /* border: 1px solid red; */
-    width: 100%; /* Ensures the container takes the full width of its parent */
+    width: 100%; 
     place-items: center;
     margin-top: 80px;
   }
   
-/* 
+  /* 
 .square:hover {
     -webkit-transform: translate(20px, -10px);
     -ms-transform: translate(10px, -10px);
@@ -19,18 +19,17 @@
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
      } */
 
-
-.square{
+.square {
+  position: relative; 
   width: 90%;
-	height: auto;
-	background: white;
+  height: 100%; 
+  background: white;
   border-radius: 4px;
   box-shadow: 0px 20px 50px #D9DBDF;
-  /* -webkit-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  transition: all 0.3s ease;  */
-  margin-bottom: 40px;
+  border: 1px solid red;
+  padding-bottom: 60px; 
 }
+
 
 /* .mask{
   clip: rect(0px, 460px, 220px, 0px);
@@ -65,25 +64,26 @@
 }
 
 .btn3 {
-    background-color: #3EDD84;
-    color: white;
-    width: 90px;
-    padding: 5px;
-    border-radius: 3px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    margin: 20px 70px 20px 30px;
-    font-size: 12px;
-    cursor: pointer;
-    font-family: 'merriweather';
-    
+  background-color: #3EDD84;
+  color: white;
+  width: 90px;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'Merriweather';
+  margin: 0 10px;
 }
 
-.btnDiv{
-  border: 1px solid red ;
-  display: flex;
+.btnDiv {
+  position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
-  /* justify-content: flex-start; */
-  /* align-items: center; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px;
+  background-color: white; 
+  border-top: 1px solid #ccc;
 }

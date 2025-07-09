@@ -35,9 +35,11 @@ const delPost = async (req, res) => {
 
 
   const yourBlog = await Blogs.find({email})
+  const allBlogs = await Blogs.find({})
 
   res.status(200).json({message:"Blog deleted successfully",
-    blogs:yourBlog
+    blogs:yourBlog,
+    allBlogs : allBlogs
   })
 
     } catch (error) {
@@ -95,6 +97,7 @@ try {
     console.log(error)
 }
 }
+
 
 //user for the particular blog
 const getParticularBlogUser = async (req, res)=>{

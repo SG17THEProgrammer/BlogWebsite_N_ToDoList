@@ -52,18 +52,20 @@ const {
 
 const generateAnswerUsingAi=async(req,res)=>{
     try {
-        console.log(req.body)
+        // console.log(req.body)
         const {title , purpose , tags , story} = req.body;
         const tagsString = tags.join(',');
 
         if(purpose =='forStory'){
             // msg = `Create a blog story in less than 500 characters(not words) where the title is '${title}' and the tags are '${tagsString}'. The answer should be in a clean paragraph format . The story should focus on using these tags appropriately.Also do not add title in the response. The paragraph should be professional.`;
-            msg = `Create a blog story in markdown between 200-500 characters with title '${title}' and keywords '${tagsString}'.Do not specify title and tagString in the response explicitly`
+            // msg = `Create a blog story in markdown between 200-500 characters with title '${title}' and keywords '${tagsString}'.Do not specify title and tagString in the response explicitly`
+            msg = `Generate a blog story in simple text form between 200-500 characters on '${title}. Use h5 tag no greater than that and do not specify it`
         }
 
         else if(purpose == 'forDescription'){
             // msg = `Create a long blog description more than 1500 characters and less than 2000 characters where title is '${title}' ,  tags are '${tagsString}' and story is '${story} .  The description should focus on using these tags an story appropriately.Also to make it professional make the important things bold , italic use styles . Also can use indentation,bullets. Basically show creativity and make it look professional . Also make it like a blog where we have starting , main body and then conclusion . But do not mention then explicity. Make sure to change paragraphs (important) at every required position. Directly give answer without mentioning that here is the blog ` 
-            msg = `Create a blog description in markdown between 1500-2000 characters with title '${title}', tags '${tagsString}', and story '${story}'. Use these tags and story creatively, making key points bold or italic. Structure it professionally with paragraphs, bullets, and indentation where needed. Avoid mentioning the structure explicitly, and ensure the content flows naturally with a clear beginning, body, and conclusion. Do not write tags at last `;
+            // msg = `Create a blog description in markdown between 1500-2000 characters with title '${title}', tags '${tagsString}', and story '${story}'. Use these tags and story creatively, making key points bold or italic. Structure it professionally with paragraphs, bullets, and indentation where needed. Avoid mentioning the structure explicitly, and ensure the content flows naturally with a clear beginning, body, and conclusion. Do not write tags at last `;
+            msg = `Generate a detailed blog in simple text form between 1500-2000 characters on '${title} and ${story}. Use h5 tag nothing greater than that and do not specify it`;
 
         }
         const chatSession = model.startChat({

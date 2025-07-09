@@ -1,36 +1,41 @@
-.otrDiv{
-    height: 60px;
-    width: 100vw;
+.otrDiv {
+    width: 100%;
     display: flex;
-    justify-content: space-evenly;
-    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
+}
+
+.navbar {
+    width: 100%;
     position: fixed;
     z-index: 1;
     top: 0;
-    background-color: white;
-    border-bottom:2px solid bisque ;
 }
-
-.btn1{
+.nav-link{
+    font-size: 14px;
+    color: black;
+    cursor: pointer;
+}
+.btn1 {
     padding: 2px 4px;
     background-color: #79D7BE;
     font-size: 13px;
 }
 
-.otrDiv a{
+.otrDiv a {
     text-decoration: none;
     color: black;
     font-size: 14px;
 }
 
-.img4{
+.img4 {
     height: 30px;
     width: 30px;
     border-radius: 50%;
     cursor: pointer;
 }
-.span{
+
+.span {
     font-size: 14px;
     color: black;
     cursor: pointer;

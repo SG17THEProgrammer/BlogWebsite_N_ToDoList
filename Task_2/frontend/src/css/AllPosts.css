@@ -4,6 +4,7 @@
     justify-content: center;
     align-items: center;
     margin-top: -10px;
+    margin-bottom: 80px;
 }
 .catBtn{
   /* border: 1px solid red; */
@@ -51,6 +52,10 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border: none;
   cursor: pointer;
+}
+
+.box::-webkit-scrollbar{
+display: none;
 }
 
 /* Hidden for smaller devices (using media query for md breakpoint) */

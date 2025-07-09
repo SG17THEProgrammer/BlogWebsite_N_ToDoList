@@ -24,7 +24,7 @@ createRoot(document.getElementById('root')).render(
                 bodyClassName="toastBody"
 
             />
-  <Footer></Footer>
+  {/* <Footer></Footer> */}
   </ScrollProvider>
   </AuthProvider>
   </>

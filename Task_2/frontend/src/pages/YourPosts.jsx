@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from './Navbar'
+import Navbar from '../components/Navbar'
 import '../css/YourPosts.css'
-import { useAuth } from './Auth'
+import { useAuth } from '../components/Auth'
 import { NavLink } from 'react-router-dom'
 import { toast } from 'react-toastify'
 const YourPosts = () => {
@@ -72,7 +72,7 @@ const YourPosts = () => {
           return <> <div className="square" key={idx}>
             <img src={elem.image} className=" img6" />
             <div className="h2">{elem.title}</div>
-            <p className='p'>{elem.story}
+            <p className='p' dangerouslySetInnerHTML={{ __html: elem.story }}>
             </p>
 
 <div className='btnDiv' key={idx}>

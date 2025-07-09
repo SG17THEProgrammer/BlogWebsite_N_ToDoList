@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import Navbar from './Navbar'
+import Navbar from '../components/Navbar'
 import '../css/Contact.css'
-import { useAuth } from './Auth'
+import { useAuth } from '../components/Auth'
 import { toast } from 'react-toastify'
 const Contact = () => {
     const {user} = useAuth()

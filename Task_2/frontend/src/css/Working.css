@@ -74,3 +74,17 @@
     width: 40%;
     border-bottom: 2px solid black;
   }
+
+@media (max-width:1030px) {
+  .steps {
+    flex-direction: column;
+    align-items: center; 
+    margin-bottom: 100px;
+  }
+  .particularStep{
+    margin-bottom: 0px;
+  }
+  .particularStep1{
+      margin-bottom: 30px;
+    }
+}
