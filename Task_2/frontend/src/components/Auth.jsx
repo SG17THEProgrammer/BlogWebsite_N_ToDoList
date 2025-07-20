@@ -81,6 +81,10 @@ export const AuthProvider = ({ children }) => {
               console.log(error)
           }
       }
+
+      const smoothScrooling =()=>{
+          window.scrollTo({ top: "0", behavior: "smooth" })
+      }
   
 
       useEffect(()=>{
@@ -91,7 +95,7 @@ export const AuthProvider = ({ children }) => {
 
 return (
     <>
-    <AuthContext.Provider value={{ isLoggedIn, storeTokensInLS , user , LogoutUser , plan , articles,allBlogs}}>
+    <AuthContext.Provider value={{ isLoggedIn, storeTokensInLS , user , LogoutUser , plan , articles,allBlogs , smoothScrooling}}>
       {children}
     </AuthContext.Provider>
     </>

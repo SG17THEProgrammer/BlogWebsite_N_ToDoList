@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { FaArrowUp } from "react-icons/fa";
+import { useAuth } from './Auth';
 
 const GoToTopButton = () => {
+    const {smoothScrooling} = useAuth();
     const [showSpecialComponent, setShowSpecialComponent] = useState(false);
 
     useEffect(() => {
@@ -31,7 +33,7 @@ const GoToTopButton = () => {
     
   return (
     <>
-       <div className={`button1 ${showSpecialComponent ? 'show' : ''}`} onClick={() => window.scrollTo({ top: "0", behavior: "smooth" })}>
+       <div className={`button1 ${showSpecialComponent ? 'show' : ''}`} onClick={smoothScrooling}>
          <FaArrowUp style={{fontSize:"25px"}} />
         </div>
     </>

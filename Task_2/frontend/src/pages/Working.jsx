@@ -50,7 +50,7 @@ const Working = ({action,reference}) => {
 
   return (
     <>
-     <div style={{ height: '10vh' }}  ref={reference} />
+     <div style={{ height: '13vh' }}  ref={reference} />
         <div className='topdiv'>
             <p className='heading'>{action=="howItWorks"?"SNEEK A PEAK":"WHY CHOOSE US"}</p>
             <h1 style={{borderBottom:"3px solid black" }}>{action==="howItWorks"?"HOW IT WORKS":"UNIQUELY DIFFERENT"}</h1>

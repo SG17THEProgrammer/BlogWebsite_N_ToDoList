@@ -6,7 +6,7 @@ const Blogs = () => {
   const {sampleBlogSectionRef} = useScroll()
   return (
     <>
-     <div ref={sampleBlogSectionRef} />
+     <div ref={sampleBlogSectionRef} style={{height:"14vh"}}/>
         <div className='topdiv' >
             <p className='heading'>Samples of Our Blogs/Articles</p>
             <h1 style={{borderBottom:"3px solid black" }}>THE ROAD SO FAR</h1>

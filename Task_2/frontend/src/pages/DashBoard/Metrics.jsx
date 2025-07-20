@@ -3,6 +3,7 @@ import { useAuth } from '../../components/Auth'
 import DoughnutChart from './DoughnutChart'
 import GroupChart from './GroupChart'
 import '../../css/DashBoard.css'
+import SideBar from './SideBar'
 
 const Metrics = ({allUsers , allBlogs}) => {
     const { user } = useAuth()
@@ -17,9 +18,16 @@ const Metrics = ({allUsers , allBlogs}) => {
 
 
     return (
-        <>
-            <div>Hi , <b>{user?.name}</b> <br />
-                Welcome to The Dashboard <br /> Here you can manage posts , users and other admin tasks</div>
+        <div className='mainDiv'>
+        
+    <div>
+    <SideBar></SideBar>
+    </div>
+
+    <div className='' style={{width:"75vw" , margin:"20px" }}> 
+
+            <div>Hi, <b>{user?.name}</b> <br />
+                Welcome to The Dashboard <br /> Here you can manage posts, users and other admin tasks</div>
 
             <div className="boxes">
                 <div className="insideBox" style={{ backgroundColor: "pink" }}>
@@ -54,7 +62,9 @@ const Metrics = ({allUsers , allBlogs}) => {
                 </div>
 
             </div>
-        </>
+                </div>
+
+        </div>
     )
 }
 

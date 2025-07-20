@@ -10,11 +10,14 @@ import AllPosts from './pages/AllPosts';
 import Contact from './pages/Contact';
 import GoToTopButton from './components/GoToTopButton';
 import Dashboard from './pages/DashBoard/Dashboard';
+import ManagePosts from './pages/DashBoard/ManagePosts';
+import ManageUsers from './pages/DashBoard/ManageUsers';
 
 const App = () => {
    const [allBlogs , setAllBlogs ] = useState();
-  
-      const getAllBlogs =async(req,res)=>{
+   const [allUsers, setAllUsers] = useState();
+
+      const getAllBlogs =async()=>{
           try {
               const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/getAllBlogs`,{
                   method: 'GET'
@@ -28,11 +31,25 @@ const App = () => {
               console.log(error)
           }
       }
-  
-      useEffect(()=>{
-          getAllBlogs()
-      },[])
 
+      const getAllUsers = async()=>{
+            try {
+                const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/allUsers`,{
+                    method: 'GET'
+                })
+                
+                const resData = await res.json() ; 
+                
+                setAllUsers(resData.allusers)
+              } catch (error) {
+                console.log(error);
+              }
+            }
+            
+            useEffect(() => {
+              getAllBlogs()
+              getAllUsers()
+            }, [])
 
   return (
     <>
@@ -50,7 +67,10 @@ const App = () => {
         <Route path='/profile' element={<UserProfile></UserProfile>}></Route>
         <Route path='/allPosts' element={<AllPosts></AllPosts>}></Route>
         <Route path='/contact' element={<Contact></Contact>}></Route>
-        <Route path='/dashboard' element={<Dashboard></Dashboard>}></Route>
+        <Route path='/dashboard' element={<Dashboard allBlogs={allBlogs} allUsers={allUsers}></Dashboard>}></Route>
+        <Route path='/managePosts' element={<ManagePosts allBlogs={allBlogs}></ManagePosts>}></Route>
+        <Route path='/manageUsers' element={<ManageUsers allUsers={allUsers}></ManageUsers>}></Route>
+        <Route path='/addPost' element={<BlogForm dash={true} motive={"Create A Post"}></BlogForm>}></Route>
       </Routes>
       </BrowserRouter>  
     </>

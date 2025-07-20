@@ -17,9 +17,11 @@
     cursor: pointer;
 }
 .btn1 {
-    padding: 2px 4px;
+    padding:4px 10px;
     background-color: #79D7BE;
-    font-size: 13px;
+    font-size: 15px;
+    font-family: Garamond, serif;
+    font-weight: 800;
 }
 
 .otrDiv a {
@@ -39,4 +41,8 @@
     font-size: 14px;
     color: black;
     cursor: pointer;
+}
+
+.nav-link{
+font-family: Georgia, serif;
 }

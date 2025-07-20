@@ -56,7 +56,6 @@ const AllPosts = () => {
       const matchesSearchQuery =
         blog.title.toLowerCase().includes(searchQuery) ||
         blog.category.toLowerCase().includes(searchQuery) ||
-        blog.story.toLowerCase().includes(searchQuery) ||
         blog.tags.some((tag) => tag.toLowerCase().includes(searchQuery));
 
       return matchesCategory && matchesSearchQuery;

@@ -4,8 +4,10 @@ import { FaRegStar } from "react-icons/fa6";
 import { formatDistanceToNow } from 'date-fns';
 import '../css/BlogCard.css'
 import { NavLink } from 'react-router-dom';
+import { useAuth } from './Auth';
 const Card = ({blog}) => {
-  const {description , email , name , rating , title , authorImage , tags , image , comments , postedOn ,_id , story} = blog
+  const {smoothScrooling} = useAuth()
+  const {description , email , name , rating , title , authorImage , tags , image , comments , postedOn ,_id } = blog
   const blogDate = new Date(postedOn);
   const daysAgo = formatDistanceToNow(blogDate, { addSuffix: true });
 
@@ -29,10 +31,7 @@ const avgRating = total / ratings.length;
 
   <div className="blog-body">
     <div className="blog-title">
-      <h1><NavLink to={`/completePost/${_id}`} className='a'>{title}</NavLink></h1>
-    </div>
-    <div className="blog-summary">
-      <p>{story}</p>
+      <h1><NavLink to={`/completePost/${_id}`} className='a' onClick={smoothScrooling}>{title}</NavLink></h1>
     </div>
 <br />
     <div className="blog-tags">

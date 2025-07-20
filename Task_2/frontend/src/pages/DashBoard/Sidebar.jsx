@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 
-const SideBar = ({setActiveView}) => {
+const SideBar = () => {
+  const location = useLocation();
   return (
     <div className="sidebar">
-      <h2 onClick={() => setActiveView('dash')} style={{cursor:"pointer"}}>Dashboard</h2>
+      <NavLink to='/dashboard' className='navlink'><h2 className='heading1'>Dashboard</h2></NavLink>
+      
       <ul>
-        <li onClick={() => setActiveView('managePosts')}>Manage Posts</li>
-        <li onClick={() => setActiveView('addPost')}>Add New Post</li>
-        <li onClick={() => setActiveView('users')}>Users</li>
+        <NavLink to='/managePosts' className='navlink'><li  className={location?.pathname === '/managePosts' ? 'active' : ''}
+          >Manage Posts</li></NavLink>
+        <NavLink to='/addPost' className='navlink'><li className={location?.pathname === '/addPost' ? 'active' : ''}
+        >Add New Post</li></NavLink>
+
+        <NavLink to='/manageUsers' className='navlink'><li className={location?.pathname === '/manageUsers' ? 'active' : ''}
+        >Users</li></NavLink>
       </ul>
     </div>
   )

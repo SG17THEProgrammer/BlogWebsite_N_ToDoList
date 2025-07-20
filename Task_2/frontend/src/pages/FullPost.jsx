@@ -47,10 +47,10 @@ useEffect(() => {
   // }
 }, [postDisplay?.likes, user?._id]);
 
-console.log(user?._id);
+// console.log(user?._id);
 
 
-console.log(postDisplay?.likes.includes(user._id));
+// console.log(postDisplay?.likes.includes(user._id));
 
 
   const getAllBlogs = async () => {
@@ -211,12 +211,11 @@ console.log(postDisplay?.likes.includes(user._id));
               })}
             </div>
             <br />
-            <div dangerouslySetInnerHTML={{ __html: postDisplay?.story }}></div>
             <p>{timeAgo} ({dateNday}) ,  {format(new Date(postDisplay?.postedOn), 'h:mm a')}</p>
             <div className='postImgDiv'>
               <img src={postDisplay?.image} alt="blog_image" className="fakeimg" />
             </div>
-            <div dangerouslySetInnerHTML={{ __html: marked(markdownContent) }} style={{ marginTop: "20px" }} />
+            <div dangerouslySetInnerHTML={{ __html: marked(markdownContent) }} style={{ marginTop: "20px" , fontSize:"12px"}} />
           </div>
         </div>
         <div className="rightcolumn">

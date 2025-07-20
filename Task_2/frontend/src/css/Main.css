@@ -2,20 +2,24 @@
     width: 100vw;
     object-fit: fill;
     filter: brightness(40%);
-    /* border: 2px solid black; */
-    height: 100%;
+    height: 100vh;
 }
 
 .content{
-    transform: translateY(-85vh);
+    /* transform: translateY(-85vh); */
+    position: absolute;
+    top: 25%;
     display: flex;
     flex-direction: column;
     align-items: center;
     color: white;
+    font-family: 'Courier New', monospace;
 }
 .txt{
     margin: 0 15vw;
+    font-family: Georgia, serif;
 }
 .txt1{
     margin: 0 10vw;
+    font-family: Georgia, serif;
 }

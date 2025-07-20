@@ -5,8 +5,8 @@ import { useAuth } from '../components/Auth'
 import { NavLink } from 'react-router-dom'
 import { toast } from 'react-toastify'
 const YourPosts = () => {
-  const { user } = useAuth()
-  
+  const { user ,smoothScrooling} = useAuth()
+
   const [yourPost, setYourPost] = useState()
 
   const getYourBlogs = async (req, res) => {
@@ -35,29 +35,29 @@ const YourPosts = () => {
   }, [user])
 
 
-  const deletePost=async(postId)=>{
+  const deletePost = async (postId) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/delPost`,{
-          method:"POST" , 
-          headers: {
-					"Content-Type": "application/json",
-				},
-          body:JSON.stringify({blogId : postId , email:user?.email})
-        })
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/delPost`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ blogId: postId, email: user?.email })
+      })
 
-        if(res.ok){
-          const resData = await res.json() 
+      if (res.ok) {
+        const resData = await res.json()
 
-          // console.log(resData)
+        // console.log(resData)
 
 
-          setYourPost(resData.blogs)  
+        setYourPost(resData.blogs)
 
-          toast.success(resData.message)
-        }
-        else{
-          console.log("Some Error occurred")
-        }
+        toast.success(resData.message)
+      }
+      else {
+        console.log("Some Error occurred")
+      }
 
     } catch (error) {
       console.log(error)
@@ -68,31 +68,29 @@ const YourPosts = () => {
     <>
       <Navbar></Navbar>
       <div className="container1">
-        {yourPost?.length>0 ? yourPost?.map((elem , idx) => {
+        {yourPost?.length > 0 ? yourPost?.map((elem, idx) => {
           return <> <div className="square" key={idx}>
-            <img src={elem.image} className=" img6" />
+            <img src={elem.image} className="img6" />
             <div className="h2">{elem.title}</div>
-            <p className='p' dangerouslySetInnerHTML={{ __html: elem.story }}>
-            </p>
 
-<div className='btnDiv' key={idx}>
+            <div className='btnDiv' key={idx}>
 
-            <NavLink to={`/completePost/${elem._id}`} style={{textDecoration:"none"}}>
-            <button className='btn3'>Read More</button>
-            </NavLink>
-  
+              <NavLink to={`/completePost/${elem._id}`} style={{ textDecoration: "none" }} onClick={smoothScrooling}>
+                <button className='btn3'>Read More</button>
+              </NavLink>
 
-            <NavLink to={`/editPost/${elem._id}`} style={{textDecoration:"none"}}>
-            <button className='btn3' style={{backgroundColor:"skyblue"}}>Edit</button>
-            </NavLink>
 
-            
-            <button className='btn3' style={{backgroundColor:"red"}}onClick={()=>deletePost(elem._id)}>Delete</button>
-</div>
+              <NavLink to={`/editPost/${elem._id}`} style={{ textDecoration: "none" }}>
+                <button className='btn3' style={{ backgroundColor: "skyblue" }}>Edit</button>
+              </NavLink>
+
+
+              <button className='btn3' style={{ backgroundColor: "red" }} onClick={() => deletePost(elem._id)}>Delete</button>
+            </div>
           </div>
           </>
-        }) : <div style={{display:"flex" , justifyContent:"center" , width:"95vw"}}>
-        <h4>No posts yet !! 😒 </h4>
+        }) : <div style={{ display: "flex", justifyContent: "center", width: "95vw" }}>
+          <h4>No posts yet !! 😒 </h4>
         </div>
         }
 

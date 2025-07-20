@@ -15,10 +15,11 @@ import Loader from '../components/Loader.jsx'
 import { Remarkable } from 'remarkable';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import {parse} from 'marked'
+import SideBar from './DashBoard/SideBar.jsx';
 
 
 const BlogForm = ({ motive, allBlogs, dash }) => {
-  const { user ,plan} = useAuth()
+  const { user ,plan,smoothScrooling} = useAuth()
   const navigate = useNavigate()
 
 
@@ -51,7 +52,6 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
     name: '',
     email: '',
     title: '',
-    story: '',
     description: '',
     authorImage: '',
     tags: [],
@@ -73,7 +73,6 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
     setFormData({
       ...formData,
       title: blogInfo.title,
-      story: blogInfo.story,
       description: blogInfo?.description,
       authorImage: blogInfo.authorImage,
       tags: blogInfo.tags,
@@ -90,7 +89,6 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
       email: user.email,
       authorImage: user.image || "https://images.unsplash.com/photo-1567446537708-ac4aa75c9c28?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       title: '',
-      story: '',
       description: '',
       tags: [],
       image: '',
@@ -127,56 +125,6 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
   };
   // console.log(formData?.tags?.length == 0);
 
-  const generateStory = async () => {
-    setLoader(true)
-    let dataToSend
-    if (formData?.title == '') {
-      toast.error("Enter title")
-      setLoader(false)
-      return;
-    }
-    else if (formData?.tags?.length == 0) {
-      toast.error("Enter atleast one tag")
-      setLoader(false)
-      return;
-    }
-    else {
-      dataToSend = {
-        title: formData?.title,
-        tags: formData?.tags,
-        purpose: 'forStory'
-      };
-    }
-
-    try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/getAnswer`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(dataToSend)
-      })
-
-      const answer = await response.json()
-
-      // console.log(parse(answer));
-
-      const md = new Remarkable();
-      const htmlContent = md.render(answer);
-
-      // console.log(htmlContent);
-      setFormData({
-        ...formData,
-        story: parse(answer)
-      })
-
-    } catch (error) {
-      console.log(error)
-    }
-    finally {
-      setLoader(false)
-    }
-  }
 
   const generateDescription = async () => {
     setLoader(true)
@@ -190,34 +138,19 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
       setLoader(false)
       return;
     }
-    else if (formData.story == '') {
-      toast.error("Enter story first")
-      setLoader(false)
-      return;
-    }
 
-    const dataToSend = {
-      title: formData?.title,
-      tags: formData?.tags,
-      story: formData?.story,
-      purpose: 'forDescription'
-
-    };
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/getAnswer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataToSend)
+        body: JSON.stringify({title: formData?.title}),
       })
 
       const answer = await response.json()
       // console.log(answer);
 
-      const md = new Remarkable();
-      const htmlContent = md.render(answer);
-// console.log(htmlContent);
       setFormData({
         ...formData,
         description: parse(answer)
@@ -257,20 +190,6 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
     }
   }
 
-  const handleQuillChangeStory = (value) => {
-    if (value == "<p><br></p>" && blogInfo) {
-      setFormData({
-        ...formData,
-        story: blogInfo.story,
-      });
-    }
-    else {
-      setFormData({
-        ...formData,
-        story: value,
-      });
-    }
-  }
 
 
   const handleTags = (e) => {
@@ -311,7 +230,6 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
           ...formData,
           image: '',
           title: '',
-          story: '',
         })
 
         setTags([])
@@ -320,7 +238,7 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
         toast.success(resData.message);
 
         navigate('/yourPosts')
-        window.scrollTo({ top: "0", behavior: "smooth" })
+        smoothScrooling();
 
       }
       else {
@@ -340,7 +258,6 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
 
       const dataToSend = {
         title: formData.title,
-        story: formData.story,
         description: formData.description,
         authorImage: formData.authorImage,
         tags: formData.tags,
@@ -360,7 +277,7 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
       if (res.ok) {
         toast.success(resData.message)
         navigate('/yourPosts')
-        window.location.reload()
+        // window.location.reload()
       }
       else {
         toast.error(resData.message)
@@ -373,7 +290,11 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
 
   return (
     <>
-      {dash === undefined ? <Navbar></Navbar> : ""}
+     <Navbar></Navbar>
+      <div className='mainDiv'>
+      <div>
+      {dash? <SideBar></SideBar> : ""}
+      </div>
       <div className={dash ? 'dash' : 'postdiv'}>
         <h1 className='h1'>{motive == "Create A Post" ? "Create A Post" : "Edit Post"}</h1>
         <label htmlFor="file" className='label' style={{ marginBottom: "10px", textDecoration: "underline", color: "skyblue", cursor: "pointer" }}>Upload an Image</label>
@@ -392,6 +313,7 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
           <option value='other'>Choose a category</option>
           <option value="Technology">Technology</option>
           <option value="Health & Fitness">Health & Fitness</option>
+          <option value="Sports & Games">Sports & Games</option>
           <option value="Lifestyle">Lifestyle</option>
           <option value="Food & Recipes">Food & Recipes</option>
           <option value="Travel">Travel</option>
@@ -430,15 +352,6 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
           ))}
         </div>
 
-        <br /><br />
-
-        <div className='aidiv'>
-          <label htmlFor="story" className='label'>Story</label>
-          <button className='aibtn' onClick={generateStory}><RiGeminiFill /> Generate using AI</button>
-        </div>
-       
-        <ReactQuill theme="snow" modules={modules} formats={formats} className='storyReactQuill' placeholder='Write/Generate your story' name='story' onChange={handleQuillChangeStory} value={formData.story}></ReactQuill>
-
         <br />
 
         <div className='aidiv'>
@@ -447,11 +360,11 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
         </div>
 
         <ReactQuill theme="snow" modules={modules} formats={formats} className='reactquill' placeholder='Write/Generate your blog' name='description' onChange={handleQuillChangeDescrip} value={formData.description} />
-        <br></br>
+        
 
         {motive == "Create A Post" ? <button className='btn2' onClick={handleSubmit}>Create Post</button> : <button className='btn2' onClick={editPost}>Edit Post</button>}
 
-
+      </div>
       </div>
       <br />
       {loader ? <Loader></Loader> : ""}

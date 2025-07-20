@@ -4,10 +4,10 @@ const User = require("../models/userSchema");
 const createBlog  = async(req, res)=>{
     try {
         // console.log(req.body)
-        const {name, title , story , description , image , authorImage , postedOn , tags , email,category} = req.body ; 
+        const {name, title  , description , image , authorImage , postedOn , tags , email,category} = req.body ; 
 
         const newBlog = new Blogs({
-            name, title , story , description , image , authorImage , postedOn,tags , email ,category
+            name, title , description , image , authorImage , postedOn,tags , email ,category
         });
 
         await newBlog.save();
