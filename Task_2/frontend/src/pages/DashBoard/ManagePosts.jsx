@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { CiEdit } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
+import { MdOutlinePushPin } from "react-icons/md";
+import { MdPushPin } from "react-icons/md";
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../components/Auth';
 import { toast } from 'react-toastify';
@@ -13,7 +15,52 @@ const ManagePosts = ({ allBlogs }) => {
   const { user } = useAuth()
   const [allPosts, setAllPosts] = useState([])
   const [searchTxt, setSearchTxt] = useState('')
+
   const [filteredPosts, setFilteredPosts] = useState()
+
+  const sortPosts = (posts = []) => {
+    return posts.sort((a, b) => {
+      if (a.isPinned && !b.isPinned) return -1;
+      if (!a.isPinned && b.isPinned) return 1;
+  
+      // fallback to original order
+      return a.originalIndex - b.originalIndex;
+    });
+  };
+  
+
+  const togglePin = async(id) => {
+
+    const updatedPosts = filteredPosts.map((post) =>
+    post._id === id ? { ...post, isPinned: !post.isPinned } : post
+  );
+
+  // Update the local state immediately
+  const sorted = sortPosts(updatedPosts);
+  setFilteredPosts(sorted);
+
+  // Send the updated pin status to the backend
+  try {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/updatePinStatus`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ postId: id, isPinned: !updatedPosts.isPinned })
+    });
+
+    console.log(res);
+    if (!res.ok) {
+      throw new Error('Failed to update pin status');
+    }
+    else{
+      toast.success("Message pinned succesfully")
+    }
+  } catch (error) {
+    toast.error('Failed to update pin status');
+    console.error(error);
+  }
+  };
 
   // console.log(allPosts);
   const deletePost = async (postId) => {
@@ -55,14 +102,21 @@ const ManagePosts = ({ allBlogs }) => {
       elem.title?.toLowerCase().includes(searchTxt?.toLowerCase())
     );
 
-    setFilteredPosts(filtered?.length == 0 && searchTxt=='' ? allBlogs : filtered);
+    setFilteredPosts(filtered?.length == 0 && searchTxt == '' ? allBlogs : filtered);
   }, [searchTxt, allPosts]);
 
   useEffect(() => {
     setAllPosts(allBlogs)
   }, [allBlogs])
 
-// console.log(allBlogs , filteredPosts);
+  useEffect(() => {
+    const withIndex = allBlogs?.map((b, i) => ({ ...b, originalIndex: i }));
+    setAllPosts(withIndex);
+    setFilteredPosts(sortPosts(withIndex));
+  }, [allBlogs]);
+  
+
+  // console.log(allBlogs);
 
   return (
     <>
@@ -91,6 +145,7 @@ const ManagePosts = ({ allBlogs }) => {
             <table className='postTable'>
               <thead>
                 <tr className='head'>
+                  <th>Pin/Unpin</th>
                   <th>#</th>
                   <th>Blog Name</th>
                   <th>Published Date & Time</th>
@@ -106,6 +161,19 @@ const ManagePosts = ({ allBlogs }) => {
                     const time = dateObj.toLocaleTimeString();
                     return (
                       <tr key={idx}>
+                        <th style={{ textAlign: 'center' }}>
+                          {!post.isPinned ? <MdOutlinePushPin
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => togglePin(post?._id , post?.isPinned)}
+                          >
+                          </MdOutlinePushPin>
+                             : <MdPushPin
+                              style={{ cursor: 'pointer' }}
+                              onClick={() => togglePin(post?._id , post?.isPinned)}
+                            >
+                            </MdPushPin>
+                           }
+                        </th>
                         <th>{idx + 1}</th>
                         <th>{post.title}</th>
                         <th>
@@ -132,7 +200,7 @@ const ManagePosts = ({ allBlogs }) => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', padding: '1rem' , fontWeight:"500"}}>
+                    <td colSpan={5} style={{ textAlign: 'center', padding: '1rem', fontWeight: "500" }}>
                       No posts found
                     </td>
                   </tr>

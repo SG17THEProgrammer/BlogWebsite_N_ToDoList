@@ -45,6 +45,10 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    isPinned:{
+        type:Boolean , 
+        required : true
+    },
     comments: {
     type: [commentSchema], 
     default: [],

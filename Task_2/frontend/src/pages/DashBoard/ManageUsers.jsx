@@ -5,12 +5,56 @@ import { CiEdit } from 'react-icons/ci'
 import { MdDelete } from 'react-icons/md'
 import SideBar from './SideBar'
 import Navbar from '../../components/Navbar'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
+import axios from 'axios'
 
 const ManageUsers = ({ allUsers }) => {
   const { user } = useAuth()
   const [allusers, setallusers] = useState(allUsers)
+  const [userData, setUserData] = useState(true)
+  const [formData , setFormData] = useState({
+    name:"",
+        email:"",
+        phone:"",
+        isAdmin:0
+  })
+  const [findUser, setFindUser] = useState()
+
   const [searchTxt, setSearchTxt] = useState('')
   const [filteredUsers, setFilteredUsers] = useState()
+  
+  if (findUser && userData) {
+
+      setFormData({
+        ...formData,
+        name: findUser.name,
+        email: findUser?.email,
+        phone: findUser.phone,
+        isAdmin: findUser.isAdmin,
+      });
+      
+      setUserData(false);
+    }
+    
+    useEffect(() => {
+      setFormData({
+        name: findUser?.name,
+        email: findUser?.email,
+        phone: findUser?.phone,
+        isAdmin: findUser?.isAdmin,
+      });
+    },[user])
+
+
+  const handleInput = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+
+    setUserData({
+      ...userData,
+      [name]: value,
+    });
+  }
 
   const deleteUser = async () => {
     try {
@@ -41,6 +85,20 @@ const ManageUsers = ({ allUsers }) => {
     }
   }
 
+  const getUserById = async (id) => {
+    console.log(id);
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_API}/getUserById`, {
+        userId: id
+      })
+
+      setFindUser(response.data.user);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 
   const handleSearch = (e) => {
     const query = e.target.value
@@ -52,7 +110,7 @@ const ManageUsers = ({ allUsers }) => {
       elem.email?.toLowerCase().includes(searchTxt?.toLowerCase())
     );
 
-    setFilteredUsers(filtered?.length == 0 && searchTxt=='' ? allusers : filtered);
+    setFilteredUsers(filtered?.length == 0 && searchTxt == '' ? allusers : filtered);
   }, [searchTxt, allusers]);
 
   useEffect(() => {
@@ -61,11 +119,74 @@ const ManageUsers = ({ allUsers }) => {
 
   // console.log(allUsers , filteredUsers);
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = (id) => {
+    setOpen(true);
+    getUserById(id)
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
 
   return (
     <>
       <Navbar></Navbar>
+
+
       <div className='mainDiv'>
+        {open ? <Dialog
+          fullWidth={true}
+          maxWidth={'md'}
+          open={open}
+          onClose={handleClose}
+        >
+          <DialogTitle>Edit User</DialogTitle>
+          <DialogContent>
+            {/* <DialogContentText>
+            You can set my maximum width and whether to adapt or not.
+          </DialogContentText> */}
+            <Box
+              noValidate
+              component="form"
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                m: 'auto',
+                width: 'fit-content',
+                columnGap: "20px",
+                border: "1px solid red",
+                paddingTop: "10px"
+              }}
+            >
+              <TextField id="outlined-basic" label="Name" variant="outlined" onChange={handleInput} name='name' value={formData.name} />
+              <TextField id="outlined-basic" label="Email" variant="outlined" onChange={handleInput} name='email' value={formData.email} />
+              <TextField id="outlined-basic" label="Phone" variant="outlined" type='number' value={formData.phone} onChange={handleInput} name='phone' />
+              <FormControl sx={{ width: "10vw" }}>
+                <InputLabel id="demo-simple-select-label">isAdmin</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  // value={age}
+                  label="isAdmin"
+                  name='isAdmin'
+                  value={formData.isAdmin}
+                  // onChange={handleChange}
+                  onChange={handleInput}
+                >
+                  <MenuItem value={formData.isAdmin?'Yes':'No'}>Yes</MenuItem>
+                  <MenuItem value={formData.isAdmin?'Yes':'No'}>No</MenuItem>
+                </Select>
+              </FormControl>
+
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Close</Button>
+          </DialogActions>
+        </Dialog> : ""}
 
         <div>
           <SideBar></SideBar>
@@ -110,15 +231,11 @@ const ManageUsers = ({ allUsers }) => {
                         <th>{user?.name}</th>
                         <th>{user?.email}</th>
                         <th>{date} & {time}</th>
-                        <th>
-                          <NavLink
-                            to={`/editPost/${user._id}`}
-                            style={{ cursor: 'pointer', textDecoration: 'none' }}
-                          >
-                            <div>
-                              <CiEdit /> Edit
-                            </div>
-                          </NavLink>
+                        <th style={{ textAlign: "center" }}>
+
+                          <div onClick={() => handleClickOpen(user._id)} style={{ color: 'blue', cursor: "pointer" }}>
+                            <CiEdit /> Edit
+                          </div>
                         </th>
                         <th style={{ textAlign: 'center' }}>
                           <MdDelete
@@ -131,7 +248,7 @@ const ManageUsers = ({ allUsers }) => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan={6} style={{ textAlign: 'center', padding: '1rem', fontWeight:"500" }}>
+                    <td colSpan={6} style={{ textAlign: 'center', padding: '1rem', fontWeight: "500" }}>
                       No users found
                     </td>
                   </tr>

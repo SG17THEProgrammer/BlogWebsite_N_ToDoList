@@ -213,7 +213,7 @@ useEffect(() => {
             <br />
             <p>{timeAgo} ({dateNday}) ,  {format(new Date(postDisplay?.postedOn), 'h:mm a')}</p>
             <div className='postImgDiv'>
-              <img src={postDisplay?.image} alt="blog_image" className="fakeimg" />
+              <img src={postDisplay?.image || "https://images.unsplash.com/photo-1638342863994-ae4eee256688?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} alt="blog_image" className="fakeimg" />
             </div>
             <div dangerouslySetInnerHTML={{ __html: marked(markdownContent) }} style={{ marginTop: "20px" , fontSize:"12px"}} />
           </div>
@@ -268,9 +268,10 @@ useEffect(() => {
           <div className="card1 card ">
             <h3>Top Rated Posts</h3>
             {topPosts.map((elem, idx) => {
-              return <><NavLink to={`/completePost/${elem._id}`}><div><img src={elem.image} alt="postImg" className='fakeimg' /></div></NavLink><br /></>
+              return <NavLink to={`/completePost/${elem._id}`} key={idx}><div><img src={elem.image} alt="postImg" className='fakeimg' /></div></NavLink>
             })
             }
+            <br />
           </div>
 
         </div>

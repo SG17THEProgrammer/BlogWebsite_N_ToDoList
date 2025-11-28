@@ -62,9 +62,9 @@ const filteredBlogs = allBlogs?.filter(blog => {
             y: {
                 beginAtZero: true,
                 suggestedMax:5 , 
-                // ticks:{
-                //     stepSize:5
-                // }
+                ticks:{
+                    stepSize:1
+                }
             },
         },
     };

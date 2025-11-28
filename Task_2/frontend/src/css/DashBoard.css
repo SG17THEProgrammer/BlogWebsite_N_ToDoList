@@ -173,4 +173,5 @@ table,th,td{
     letter-spacing: 5px;
     border-bottom: 1px solid white ;
     padding-bottom: 15px;
+    text-shadow: 0 2px 5px #fff;
 }

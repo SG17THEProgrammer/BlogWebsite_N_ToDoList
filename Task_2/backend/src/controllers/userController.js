@@ -101,7 +101,21 @@ const login = async (req, res) => {
     }
 }
 
-const getUser = async (req, res) => {
+const getUserById = async (req, res) => {
+    try {
+        const userId = req.body.userId;
+
+        const user = await User.findById({_id:userId})
+
+        return res.status(200).json({ user })
+
+
+    } catch (error) {
+        console.log(error)
+        res.status(404).send(error)
+    }
+}
+const  getUser= async (req, res) => {
     try {
 
         const userData = req.user;
@@ -268,4 +282,4 @@ const updateProfile = async (req, res) => {
     }
 }
 
-module.exports = {register,getAllUsers,login,getUser,updateProfile,delUser}
+module.exports = {register,getAllUsers,login,getUser,updateProfile,delUser , getUserById}

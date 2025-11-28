@@ -9,12 +9,15 @@ import Badge from '../components/Badge'
 const UserProfile = () => {
   const {user,plan,allBlogs} = useAuth()
 
-// console.log(user)
-// console.log(plan)
+console.log(user)
+console.log(plan)
 
 
-    let msg = 0
-    if (plan === "Basic") {
+    let msg = ''
+    if (plan === "Free") {
+      msg = 'You will get Basic features with Free Trail'
+          }
+    else if (plan === "Basic") {
 msg = 'For more and better posts get our Standard subscription'
     } else if (plan === "Standard") {  
       msg = 'For all posts and advanced content get our Premium subscription'

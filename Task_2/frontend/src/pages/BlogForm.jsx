@@ -83,16 +83,17 @@ const BlogForm = ({ motive, allBlogs, dash }) => {
     setBlogData(false);
   }
 
+  console.log(blogInfo , formData);
   useEffect(() => {
     setFormData({
       name: user.name,
       email: user.email,
       authorImage: user.image || "https://images.unsplash.com/photo-1567446537708-ac4aa75c9c28?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      title: '',
+      title: blogInfo?.title,
       description: '',
-      tags: [],
+      tags: blogInfo?.tags,
       image: '',
-      category: ''
+      category: blogInfo?.category
     });
   }, [user])
 

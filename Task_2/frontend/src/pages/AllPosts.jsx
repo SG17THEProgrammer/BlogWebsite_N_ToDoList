@@ -4,42 +4,30 @@ import '../css/AllPosts.css'
 import Box from '@mui/material/Box';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../components/Auth';
+import Loader from '../components/Loader'
 const AllPosts = () => {
     const {plan , articles,allBlogs} = useAuth();
 
-    // const [allBlogs, setAllBlogs] = useState(allBlogs)
     const [selectedCategory, setSelectedCategory] = useState('');
-    const [filteredBlogs, setFilteredBlogs] = useState(articles);
+    const [filteredBlogs, setFilteredBlogs] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
+    const [loading , setLoading] = useState(false)
 
-        // const getAllBlogs = async () => {
-        //     try {
-        //         const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/getAllBlogs`, {
-        //             method: 'GET'
-        //         })
+    console.log(plan , articles , allBlogs);
 
-        //         const resData = await res.json();
-
-        //         setAllBlogs(resData.allBlogs)
-
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
-        // }
-
-        // useEffect(() => {
-        //     getAllBlogs();
-        // }, [])
-
+// useEffect(()=>{
+//     setLoading(filteredBlogs?.length==0)
+// },[])
+    
     const categories = [...new Set(allBlogs?.map((blog) => blog.category))];
     // console.log(categories)
-
-  const handleCategoryClick = (category) => {
-    const newCategory = category === selectedCategory ? '' : category;
+    
+    const handleCategoryClick = (category) => {
+        const newCategory = category === selectedCategory ? '' : category;
     setSelectedCategory(newCategory);
-  };
+};
 
   const handleSearch = (event) => {
     const query = event.target.value.toLowerCase();
@@ -47,30 +35,32 @@ const AllPosts = () => {
   };
 
   useEffect(() => {
-    const filtered = articles?.filter((blog) => {
+      const filtered = articles?.filter((blog) => {
 
-      const matchesCategory = selectedCategory
+          const matchesCategory = selectedCategory
         ? blog.category === selectedCategory
         : true;
-
-      const matchesSearchQuery =
+        
+        const matchesSearchQuery =
         blog.title.toLowerCase().includes(searchQuery) ||
         blog.category.toLowerCase().includes(searchQuery) ||
         blog.tags.some((tag) => tag.toLowerCase().includes(searchQuery));
-
-      return matchesCategory && matchesSearchQuery;
+        
+        return matchesCategory && matchesSearchQuery;
     });
-
+    
     setFilteredBlogs(filtered);
-  }, [searchQuery, selectedCategory]); 
+}, [searchQuery, selectedCategory , plan]); 
 
-  const handlePremPost=()=>{
+
+const handlePremPost=()=>{
     try {
         console.log("clicked");
     } catch (error) {
         
     }
-  }
+}
+
         
     return (
         <>
@@ -109,7 +99,7 @@ const AllPosts = () => {
             </div>
             <div className='catBtn'>
                 {categories?.map((elem, idx) => {
-                    return <button style={{
+                    return <button key={idx} style={{
                         backgroundColor: selectedCategory === elem ? '#007bff' : '#ccc',
                         color: selectedCategory === elem ? '#fff' : '#000',
                         margin: '5px',
@@ -117,7 +107,7 @@ const AllPosts = () => {
                         border: 'none',
                         cursor: 'pointer',
                         borderRadius: '4px',
-                    }} key={idx} onClick={() => handleCategoryClick(elem)}>{elem}</button>
+                    }} onClick={() => handleCategoryClick(elem)}>{elem}</button>
                 })}
             </div>
             <div className='imgDiv'>
@@ -125,7 +115,7 @@ const AllPosts = () => {
                 <Box sx={{ width: "90vw", height: "100vh", overflowY: 'scroll', marginTop: "20px" }} className="box">
                     <ImageList variant="masonry" cols={3} gap={8} >
                         {filteredBlogs?.length>0 ? filteredBlogs?.map((item, idx) => (
-                            <NavLink to={`/completePost/${item._id}`}><ImageListItem key={idx} className="image-item" children={idx}>
+                            <NavLink to={`/completePost/${item._id}`} key={idx}><ImageListItem className="image-item" children={idx}>
                                 <div className="image-container">
                                     <img
                                         src={item.image.startsWith('data:image') ? item.image : `${item.image}?w=248&fit=crop&auto=format`}
@@ -147,7 +137,7 @@ const AllPosts = () => {
                                 </div>
                             </ImageListItem>
                             </NavLink>
-                        )):<h5 className='error' style={{textAlign:"center", width: "90vw" ,overflow:"hidden"}}>No blogs found</h5>}
+                        )): loading?<Loader></Loader>:<h5 className='error' style={{textAlign:"center", width: "90vw" ,overflow:"hidden"}}>No blogs found</h5>}
                     </ImageList>
                 </Box>
             </div>

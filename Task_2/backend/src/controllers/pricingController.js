@@ -80,9 +80,9 @@ const createSession = async (req, res) => {
             apiKey: process.env.STRIPE_SECRET_KEY,
           }
         );
-      // console.log(subscriptions  ,  process.env.STRIPE_SECRET_KEY);
-        if (!subscriptions.data.length) return res.json({plan:"Free" , article : []});
-      
+        // console.log(subscriptions  ,  process.env.STRIPE_SECRET_KEY);
+        if (!subscriptions.data.length) return res.json({plan:"Free" , article : await Blogs.find({ access: "Free" })});
+        
         const plan = subscriptions.data[0].plan.nickname;
         
         // if (plan === "Free") {

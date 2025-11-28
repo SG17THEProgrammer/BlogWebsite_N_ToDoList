@@ -157,7 +157,7 @@ const Comment = ({ blogId, postDisplay }) => {
             
             <div style={{marginBottom:"20px"}}>
                 {allComments?.map((elem, idx) => {
-                    return <><div className='commDiv' key={idx}>
+                    return <div className='commDiv' key={idx}>
                         <div className='leftDiv'><img src={elem.userImage} alt="user_image" /></div>
                         <div className='rightDiv'>
                             <div className='function'>
@@ -192,7 +192,7 @@ const Comment = ({ blogId, postDisplay }) => {
                         </div>
 
                     </div>
-                    </>
+                    
                 }
 
                 )}

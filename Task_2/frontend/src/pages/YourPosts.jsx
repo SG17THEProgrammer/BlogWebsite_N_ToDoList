@@ -69,7 +69,7 @@ const YourPosts = () => {
       <Navbar></Navbar>
       <div className="container1">
         {yourPost?.length > 0 ? yourPost?.map((elem, idx) => {
-          return <> <div className="square" key={idx}>
+          return <div className="square" key={idx}>
             <img src={elem.image} className="img6" />
             <div className="h2">{elem.title}</div>
 
@@ -88,7 +88,7 @@ const YourPosts = () => {
               <button className='btn3' style={{ backgroundColor: "red" }} onClick={() => deletePost(elem._id)}>Delete</button>
             </div>
           </div>
-          </>
+        
         }) : <div style={{ display: "flex", justifyContent: "center", width: "95vw" }}>
           <h4>No posts yet !! 😒 </h4>
         </div>
