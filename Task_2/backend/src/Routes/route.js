@@ -1,11 +1,11 @@
 const express = require('express')
 const router = new express.Router()
 const validate = require('../middleware/validate') 
-const { register, getAllUsers, login, getUser, updateProfile, delUser, getUserById } = require('../controllers/userController')
+const { register, getAllUsers, login, getUser, updateProfile, delUser, getUserById, updateUser } = require('../controllers/userController')
 const signupSchema = require('../validators/signupSchema')
 const loginSchema = require('../validators/loginSchema')
 const blogSchema = require('../validators/blogSchema')
-const { createBlog, getYourBlog, getAllBlogs, delPost, editPost, getParticularBlogUser, updatePinStatus } = require('../controllers/blogController')
+const { createBlog, getYourBlog, getAllBlogs, delPost, editPost, getParticularBlogUser, updatePinStatus, bookmark } = require('../controllers/blogController')
 const { getSuccessStories } = require('../controllers/successStoriesController')
 const { generateAnswerUsingAi } = require('../controllers/openAiController')
 const {getAllPlans, createSession, getPlan} = require('../controllers/pricingController')
@@ -37,6 +37,7 @@ router.post('/like' ,like)
 router.post('/isLiked' ,isLiked)
 router.post('/updatePinStatus' ,updatePinStatus)
 router.post('/getUserById' ,getUserById)
+router.post('/bookmark' ,bookmark)
 
 
 router.get('/allUsers',getAllUsers)
@@ -46,6 +47,7 @@ router.get('/getAllBlogs', getAllBlogs)
 router.get('/getAllPlans', getAllPlans)
 
 router.put('/updateProfile', updateProfile)
+router.put('/updateUser' ,updateUser)
 
 router.patch('/editPost' , editPost)
 

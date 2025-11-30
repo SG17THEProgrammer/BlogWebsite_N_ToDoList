@@ -281,5 +281,57 @@ const updateProfile = async (req, res) => {
         res.status(500).json({ message: "Error updating profile" });
     }
 }
+const updateUser = async (req, res) => {
+    try {
+        const { formData , userId } = req.body;
+        const {name, email, phone, isAdmin} = formData 
 
-module.exports = {register,getAllUsers,login,getUser,updateProfile,delUser , getUserById}
+        // console.log(portfolio)
+        //     console.log(portfolio=="")
+
+        const user = await User.findById(userId); 
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (email && email !== user.email) {
+            const existingUser = await User.findOne({ email });
+
+            if (existingUser) {
+                return res.status(400).json({ message: ['Email already exists'] });
+            }
+        }
+    
+        // if (password != confirmPassword) {
+        //     return res.status(400).json({ message: "Passwords do not match" });
+        // }
+
+        if (phone && phone !== user.phone) {
+        const existingPhoneNumber = await User.findOne({ phone });
+        if (existingPhoneNumber) {
+            return res.status(400).json({ message: ['Phone Number already exists'] });
+        }
+    }
+
+        if (name) user.name = name;
+        if (email) user.email = email;
+        if (phone) user.phone = phone;
+        if (isAdmin) user.isAdmin = isAdmin;
+
+        await User.findByIdAndUpdate(userId, user, { new: true });
+
+        const allUsers = await User.find({})
+
+        res.status(200).json({
+            message:"User updated successfully",
+            allUsers: allUsers,
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error updating profile" });
+    }
+}
+
+module.exports = {register,getAllUsers,login,getUser,updateProfile,delUser , getUserById , updateUser}

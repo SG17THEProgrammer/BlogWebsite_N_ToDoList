@@ -7,7 +7,7 @@ import { ImagetoBase64 } from '../utility/ImagetoBase64'
 import Badge from '../components/Badge'
 
 const UserProfile = () => {
-  const {user,plan,allBlogs} = useAuth()
+  const {user,plan} = useAuth()
 
 console.log(user)
 console.log(plan)

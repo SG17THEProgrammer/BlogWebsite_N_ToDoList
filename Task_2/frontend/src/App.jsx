@@ -12,6 +12,7 @@ import GoToTopButton from './components/GoToTopButton';
 import Dashboard from './pages/DashBoard/Dashboard';
 import ManagePosts from './pages/DashBoard/ManagePosts';
 import ManageUsers from './pages/DashBoard/ManageUsers';
+import Bookmark from './pages/Bookmark';
 
 const App = () => {
    const [allBlogs , setAllBlogs ] = useState();
@@ -65,11 +66,12 @@ const App = () => {
         <Route path='/yourPosts' element={<YourPosts></YourPosts>}></Route>
         <Route path='/completePost/:id' element={<FullPost></FullPost>}></Route>
         <Route path='/profile' element={<UserProfile></UserProfile>}></Route>
+        <Route path='/bookmarks' element={<Bookmark></Bookmark>}></Route>
         <Route path='/allPosts' element={<AllPosts></AllPosts>}></Route>
         <Route path='/contact' element={<Contact></Contact>}></Route>
         <Route path='/dashboard' element={<Dashboard allBlogs={allBlogs} allUsers={allUsers}></Dashboard>}></Route>
         <Route path='/managePosts' element={<ManagePosts allBlogs={allBlogs}></ManagePosts>}></Route>
-        <Route path='/manageUsers' element={<ManageUsers allUsers={allUsers}></ManageUsers>}></Route>
+        <Route path='/manageUsers' element={<ManageUsers allUsers={allUsers} ></ManageUsers>}></Route>
         <Route path='/addPost' element={<BlogForm dash={true} motive={"Create A Post"}></BlogForm>}></Route>
       </Routes>
       </BrowserRouter>  

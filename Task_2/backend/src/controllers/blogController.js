@@ -135,4 +135,37 @@ const updatePinStatus = async (req, res) => {
     }
 }
 
-module.exports = { createBlog, getYourBlog, getAllBlogs, delPost, editPost, getParticularBlogUser , updatePinStatus }
+const bookmark = async (req, res) => {
+    try {
+        const blogId = req.body.blogId ; 
+        
+        const blog = await Blogs.findById(blogId)
+
+        const isBookmarked = blog.isBookmarked
+
+        if (!blog) {
+          return res.status(404).json('Blog not found');
+        }
+
+        await blog.updateOne({
+            $set: {
+              isBookmarked: !isBookmarked
+            }
+          });
+
+          const allBlogs = await Blogs.find({})
+
+          return res.status(200).json({
+            message: isBookmarked ? 'Blog un-bookmarked successfully' : 'Blog bookmarked successfully',
+            isBookmarked: !isBookmarked , 
+            allBlogs : allBlogs
+          });
+
+    } catch (error) {
+        console.log(error);
+
+    }
+}
+
+
+module.exports = { createBlog, getYourBlog, getAllBlogs, delPost, editPost, getParticularBlogUser , updatePinStatus , bookmark }

@@ -19,38 +19,34 @@ import { AiFillLike } from "react-icons/ai";
 import { useAuth } from '../components/Auth';
 import { toast } from 'react-toastify';
 import SharePopup from '../components/SharePopup';
+import { FaRegBookmark } from "react-icons/fa6";
+import { FaBookmark } from "react-icons/fa6";
+import axios from 'axios';
 
 const FullPost = () => {
-  const { user } = useAuth()
+  const { user , setContextAllBlogs } = useAuth()
   const { id } = useParams();
   const [allBlogs, setAllBlogs] = useState();
   const [blogUser, setBlogUser] = useState();
 
 
-  
+
   const postDisplay = allBlogs?.filter((elem) => elem._id === id)[0];
-  
+
   const [likes, setLikes] = useState()
   const [toggleLike, setToggleLike] = useState();
-  
-useEffect(() => {
-  // if (postDisplay?.likes && user?._id) {
+  const [toggleBookmark, setToggleBookmark] = useState();
+
+  useEffect(() => {
     setLikes(postDisplay?.likes?.length);
-  // }
-}, [postDisplay?.likes, user?._id]);
-
-console.log(postDisplay?.likes?.length);
-
-useEffect(() => {
-  // if (postDisplay?.likes && user?._id) {
     setToggleLike(postDisplay?.likes.includes(user._id));
-  // }
-}, [postDisplay?.likes, user?._id]);
-
-// console.log(user?._id);
+    setToggleBookmark(postDisplay?.isBookmarked)
+  }, [postDisplay]);
 
 
-// console.log(postDisplay?.likes.includes(user._id));
+
+
+  // console.log(postDisplay?.likes.includes(user._id));
 
 
   const getAllBlogs = async () => {
@@ -183,28 +179,48 @@ useEffect(() => {
   //         },
   //         body: JSON.stringify({ id, blogId })
   //       })
-  
-  
+
+
   //       const resData = await response.json();
-  
+
   //       console.log(resData);
-  
-  
+
+
   //     } catch (error) {
   //       console.log(error);
   //     }
   //   }
-    // useEffect(()=>{
-    
-    // isLiked(user?.id,id )
-    // },[])
+  // useEffect(()=>{
+
+  // isLiked(user?.id,id )
+  // },[])
+
+  const bookmark = async (blogId) =>{
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_API}/bookmark`, {
+        blogId
+      }
+      )
+
+      setToggleBookmark(response.data.isBookmarked)
+      setAllBlogs(response.data.allBlogs)
+      setContextAllBlogs(response.data.allBlogs)
+      toast.success(response.data.message)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
       <Navbar></Navbar>
       <div className="row">
         <div className="leftcolumn">
           <div className="card">
-            <h2>{postDisplay?.title}</h2>
+            <div style={{ display: 'flex', justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+              <h2>{postDisplay?.title}</h2>
+              {toggleBookmark ? <FaBookmark style={{ fontSize: "20px", marginTop: "-20px" , cursor:"pointer" }} onClick={()=>bookmark(postDisplay?._id)}/> : <FaRegBookmark style={{ fontSize: "20px", marginTop: "-20px" , cursor:"pointer" }} onClick={()=>bookmark(postDisplay?._id)}/>}
+            </div>
             <div className='tagdiv'>
               {postDisplay?.tags?.map((elem, idx) => {
                 return <span key={idx} style={{ textTransform: "uppercase" }}>{elem}&nbsp;{idx < tagLength - 1 ? "|" : ""}&nbsp;</span>
@@ -215,7 +231,7 @@ useEffect(() => {
             <div className='postImgDiv'>
               <img src={postDisplay?.image || "https://images.unsplash.com/photo-1638342863994-ae4eee256688?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} alt="blog_image" className="fakeimg" />
             </div>
-            <div dangerouslySetInnerHTML={{ __html: marked(markdownContent) }} style={{ marginTop: "20px" , fontSize:"12px"}} />
+            <div dangerouslySetInnerHTML={{ __html: marked(markdownContent) }} style={{ marginTop: "20px", fontSize: "12px" }} />
           </div>
         </div>
         <div className="rightcolumn">
@@ -260,7 +276,7 @@ useEffect(() => {
               <div>{likes} Likes</div>
             </div>
             <div className='shareIcons'>
-            <SharePopup post={postDisplay} />
+              <SharePopup post={postDisplay} />
             </div>
           </div>
 

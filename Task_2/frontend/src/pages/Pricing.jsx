@@ -7,7 +7,7 @@ import axios from "axios";
 import { useAuth } from '../components/Auth';
 
 const Pricing = () => {
-  const {user,allBlogs,plan} = useAuth()
+  const {user,contextAllBlogs,plan} = useAuth()
     const {pricingSectionRef} = useScroll()
   const [plans , setPlans] = useState() 
 
@@ -63,7 +63,7 @@ const Pricing = () => {
         const {nickname ,unit_amount} = elem
         if(nickname==='Basic') noOfPosts=4
         else if(nickname==='Standard') noOfPosts=8
-        else noOfPosts=`All (${allBlogs?.length})`
+        else noOfPosts=`All (${contextAllBlogs?.length})`
         
         return (
         <div className="pricing-card hobby" key={idx}>

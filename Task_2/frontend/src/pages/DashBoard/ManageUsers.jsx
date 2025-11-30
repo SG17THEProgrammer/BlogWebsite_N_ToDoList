@@ -7,10 +7,12 @@ import SideBar from './SideBar'
 import Navbar from '../../components/Navbar'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const ManageUsers = ({ allUsers }) => {
   const { user } = useAuth()
   const [allusers, setallusers] = useState(allUsers)
+  const [userId , setUserId] = useState()
   const [userData, setUserData] = useState(true)
   const [formData , setFormData] = useState({
     name:"",
@@ -43,18 +45,19 @@ const ManageUsers = ({ allUsers }) => {
         phone: findUser?.phone,
         isAdmin: findUser?.isAdmin,
       });
-    },[user])
+    },[findUser , userData , user , userId])
 
 
   const handleInput = (e) => {
     let name = e.target.name;
     let value = e.target.value;
 
-    setUserData({
-      ...userData,
+    setFormData({
+      ...formData,
       [name]: value,
     });
   }
+  
 
   const deleteUser = async () => {
     try {
@@ -124,11 +127,29 @@ const ManageUsers = ({ allUsers }) => {
   const handleClickOpen = (id) => {
     setOpen(true);
     getUserById(id)
+    setUserId(id)
   };
 
   const handleClose = () => {
     setOpen(false);
   };
+
+
+  const updateUser = async ()=>{
+    try {
+      const response = await axios.put(`${import.meta.env.VITE_BACKEND_API}/updateUser`, {
+        formData,
+        userId
+      })
+
+      toast.success(response.data.message)
+
+      setallusers(response.data.allUsers)
+      setOpen(false)
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
   return (
@@ -143,7 +164,10 @@ const ManageUsers = ({ allUsers }) => {
           open={open}
           onClose={handleClose}
         >
-          <DialogTitle>Edit User</DialogTitle>
+          <Box sx={{display:"flex" , justifyContent:"space-between" , alignItems:"center" , width:"97%"}}>
+          <DialogTitle >Edit User</DialogTitle>
+          <Button variant='contained' onClick={updateUser}>Edit</Button>
+          </Box>
           <DialogContent>
             {/* <DialogContentText>
             You can set my maximum width and whether to adapt or not.
@@ -157,7 +181,6 @@ const ManageUsers = ({ allUsers }) => {
                 m: 'auto',
                 width: 'fit-content',
                 columnGap: "20px",
-                border: "1px solid red",
                 paddingTop: "10px"
               }}
             >
@@ -172,14 +195,14 @@ const ManageUsers = ({ allUsers }) => {
                   // value={age}
                   label="isAdmin"
                   name='isAdmin'
-                  value={formData.isAdmin}
+                  value={formData?.isAdmin}
                   // onChange={handleChange}
                   onChange={handleInput}
                 >
-                  <MenuItem value={formData.isAdmin?'Yes':'No'}>Yes</MenuItem>
-                  <MenuItem value={formData.isAdmin?'Yes':'No'}>No</MenuItem>
+                  <MenuItem value={true}>Yes</MenuItem>
+                  <MenuItem value={false}>No</MenuItem>
                 </Select>
-              </FormControl>
+              </FormControl>  
 
             </Box>
           </DialogContent>

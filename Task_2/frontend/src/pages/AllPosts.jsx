@@ -8,20 +8,20 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../components/Auth';
 import Loader from '../components/Loader'
 const AllPosts = () => {
-    const {plan , articles,allBlogs} = useAuth();
+    const {plan , articles,contextAllBlogs} = useAuth();
 
     const [selectedCategory, setSelectedCategory] = useState('');
     const [filteredBlogs, setFilteredBlogs] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [loading , setLoading] = useState(false)
 
-    console.log(plan , articles , allBlogs);
+    console.log(plan , articles , contextAllBlogs);
 
 // useEffect(()=>{
 //     setLoading(filteredBlogs?.length==0)
 // },[])
     
-    const categories = [...new Set(allBlogs?.map((blog) => blog.category))];
+    const categories = [...new Set(contextAllBlogs?.map((blog) => blog.category))];
     // console.log(categories)
     
     const handleCategoryClick = (category) => {

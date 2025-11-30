@@ -82,22 +82,27 @@ const Navbar = () => {
                 </a>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <li className="nav-item dropdown-item">
-                <NavLink className="nav-link" to="/allPosts" onClick={smoothScrooling}>All Posts</NavLink>
-              </li>
-
-              {isLoggedIn && (
-                <>
-                  <li className="nav-item dropdown-item">
-                    <NavLink className="nav-link" to="/yourPosts" onClick={smoothScrooling}>Your Posts</NavLink>
+                    <NavLink className="nav-link" to="/allPosts" onClick={smoothScrooling}>All Posts</NavLink>
                   </li>
 
-                  {!location.pathname.startsWith("/editPost") && (
-                    <li className="nav-item dropdown-item">
-                      <NavLink className="nav-link" to="/createPost" onClick={smoothScrooling}>Create a Post</NavLink>
-                    </li>
+                  {isLoggedIn && (
+                    <>
+                      <li className="nav-item dropdown-item">
+                        <NavLink className="nav-link" to="/yourPosts" onClick={smoothScrooling}>Your Posts</NavLink>
+                      </li>
+
+                      {!location.pathname.startsWith("/editPost") && (
+                        <li className="nav-item dropdown-item">
+                          <NavLink className="nav-link" to="/createPost" onClick={smoothScrooling}>Create a Post</NavLink>
+                        </li>
+                      )}
+
+                      <li className="nav-item dropdown-item">
+                        <NavLink className="nav-link" to="/bookmarks" onClick={smoothScrooling}>Bookmarked Posts</NavLink>
+                      </li>
+
+                    </>
                   )}
-                </>
-              )}
                 </div>
               </li>
 

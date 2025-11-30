@@ -2,32 +2,32 @@ const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
     author: {
-      type: String,
-      required: true,
+        type: String,
+        required: true,
     },
     userImage: {
-      type: String,
-      required: true,
+        type: String,
+        required: true,
     },
     text: {
-      type: String,
-      required: true,
+        type: String,
+        required: true,
     },
-  },{ timestamps: true });
-  
+}, { timestamps: true });
+
 const blogSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true , 
+        required: true,
     },
     email: {
         type: String,
         required: true
     },
     rating: {
-            type: Map,
-            of: Number, //key is userId and the value is the rating
-            default: {},
+        type: Map,
+        of: Number, //key is userId and the value is the rating
+        default: {},
     },
     title: {
         type: String,
@@ -45,18 +45,18 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    isPinned:{
-        type:Boolean , 
-        required : true
+    isPinned: {
+        type: Boolean,
+        required: true
     },
     comments: {
-    type: [commentSchema], 
-    default: [],
-  },
-  likes:{
-    type: [String],
-    default: []  
-},
+        type: [commentSchema],
+        default: [],
+    },
+    likes: {
+        type: [String],
+        default: []
+    },
     authorImage: {
         type: String,
         required: true
@@ -65,10 +65,14 @@ const blogSchema = new mongoose.Schema({
         type: [String],
         required: true,
     },
-    access:{
+    access: {
         type: String,
-        enum: ["Basic", "Standard", "Premium"],
-        // required: true
+        enum: ["Free", "Basic", "Standard", "Premium"],
+        required: true
+    },
+    isBookmarked: {
+        type: Boolean,
+        required: true
     },
     postedOn: {
         type: Date,

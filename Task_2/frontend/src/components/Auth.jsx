@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState("");
   const [plan, setPlan] = useState()
   const [articles, setArticles] = useState()
-  const [allBlogs, setAllBlogs] = useState()
+  const [contextAllBlogs, setContextAllBlogs] = useState()
 
 
   const storeTokensInLS = (serverToken) => {
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
 
       const resData = await res.json();
 
-      setAllBlogs(resData.allBlogs)
+      setContextAllBlogs(resData.allBlogs)
 
     } catch (error) {
       console.log(error)
@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <>
-      <AuthContext.Provider value={{ isLoggedIn, storeTokensInLS, user, LogoutUser, plan, articles, allBlogs, smoothScrooling }}>
+      <AuthContext.Provider value={{ isLoggedIn, storeTokensInLS, user, LogoutUser, plan, articles, contextAllBlogs, setContextAllBlogs,  smoothScrooling }}>
         {children}
       </AuthContext.Provider>
     </>
