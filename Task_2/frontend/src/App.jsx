@@ -12,6 +12,7 @@ import GoToTopButton from './components/GoToTopButton';
 import Dashboard from './pages/DashBoard/Dashboard';
 import ManagePosts from './pages/DashBoard/ManagePosts';
 import ManageUsers from './pages/DashBoard/ManageUsers';
+import ScrapedBlogs from './pages/ScrapedBlogs';
 import Bookmark from './pages/Bookmark';
 
 const App = () => {
@@ -68,6 +69,7 @@ const App = () => {
         <Route path='/profile' element={<UserProfile></UserProfile>}></Route>
         <Route path='/bookmarks' element={<Bookmark></Bookmark>}></Route>
         <Route path='/allPosts' element={<AllPosts></AllPosts>}></Route>
+        <Route path='/scrapedBlog/:id' element={<ScrapedBlogs></ScrapedBlogs>}></Route>
         <Route path='/contact' element={<Contact></Contact>}></Route>
         <Route path='/dashboard' element={<Dashboard allBlogs={allBlogs} allUsers={allUsers}></Dashboard>}></Route>
         <Route path='/managePosts' element={<ManagePosts allBlogs={allBlogs}></ManagePosts>}></Route>

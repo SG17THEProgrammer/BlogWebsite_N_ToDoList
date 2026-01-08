@@ -53,15 +53,7 @@ const AllPosts = () => {
 }, [searchQuery, selectedCategory , plan]); 
 
 
-const handlePremPost=()=>{
-    try {
-        console.log("clicked");
-    } catch (error) {
-        
-    }
-}
-
-        
+   
     return (
         <>
             <Navbar></Navbar>
@@ -72,18 +64,23 @@ const handlePremPost=()=>{
 
 
                 <div>
-                    <div className="link-container" onClick={handlePremPost}>
+                <NavLink
+                //  to='/scrapedBlogs'
+                 >
+
+                
+                    <div className="link-container">
                             <svg viewBox="0 0 200 200" width="100" height="100" className="text-lg tracking-widest rotate-svg">
                                 <path id="circlePath" fill="none" d="M 100, 100 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0" />
                                 <text>
                                     <textPath href="#circlePath" startOffset="0%" style={{ fontSize: "17px" }}>
-                                        Explore More•
+                                        Explore•
                                     </textPath>
-                                    <textPath href="#circlePath" startOffset="29.33%" style={{ fontSize: "17px" }}>
+                                    <textPath href="#circlePath" startOffset="20.33%" style={{ fontSize: "17px" }}>
                                         Upgrade yourself•
                                     </textPath>
-                                    <textPath href="#circlePath" startOffset="66.66%" style={{ fontSize: "17px" }} className='blinking-text'>
-                                        Premium Posts•
+                                    <textPath href="#circlePath" startOffset="60.66%" style={{ fontSize: "17px" }} className='blinking-text'>
+                                        SEO Friendly Posts•
                                     </textPath>
                                 </text>
                             </svg>
@@ -94,6 +91,7 @@ const handlePremPost=()=>{
                                 </svg>
                             </button>
                     </div>
+                    </NavLink>
                 </div>
 
             </div>

@@ -5,7 +5,7 @@ const { register, getAllUsers, login, getUser, updateProfile, delUser, getUserBy
 const signupSchema = require('../validators/signupSchema')
 const loginSchema = require('../validators/loginSchema')
 const blogSchema = require('../validators/blogSchema')
-const { createBlog, getYourBlog, getAllBlogs, delPost, editPost, getParticularBlogUser, updatePinStatus, bookmark } = require('../controllers/blogController')
+const { createBlog, getYourBlog, getAllBlogs, delPost, editPost, getParticularBlogUser, updatePinStatus, bookmark, getScrapedBlog } = require('../controllers/blogController')
 const { getSuccessStories } = require('../controllers/successStoriesController')
 const { generateAnswerUsingAi } = require('../controllers/openAiController')
 const {getAllPlans, createSession, getPlan} = require('../controllers/pricingController')
@@ -15,6 +15,7 @@ const { contact } = require('../controllers/controller.js')
 const { like
     , isLiked 
 } = require('../controllers/likeController.js')
+const { optimizeBlog } = require('../controllers/aiController.js')
 
 
 router.post('/register',validate(signupSchema),register)
@@ -38,12 +39,14 @@ router.post('/isLiked' ,isLiked)
 router.post('/updatePinStatus' ,updatePinStatus)
 router.post('/getUserById' ,getUserById)
 router.post('/bookmark' ,bookmark)
+router.post('/rewritePost' ,optimizeBlog)
 
 
 router.get('/allUsers',getAllUsers)
 router.get('/allsuccessStories',getSuccessStories)
 router.get('/user',auth , getUser)
 router.get('/getAllBlogs', getAllBlogs)
+router.get('/getScrapedBlog/:id', getScrapedBlog)
 router.get('/getAllPlans', getAllPlans)
 
 router.put('/updateProfile', updateProfile)

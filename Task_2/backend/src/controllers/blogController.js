@@ -1,4 +1,5 @@
 const Blogs = require("../models/blogSchema");
+const scrapedBlog = require("../models/scrapedBlogSchema");
 const User = require("../models/userSchema");
 
 const createBlog = async (req, res) => {
@@ -99,6 +100,22 @@ const getAllBlogs = async (req, res) => {
     }
 }
 
+const getScrapedBlog = async (req, res) => {
+    try {
+
+        const id = req.params.id;
+        
+
+        const filteredscrapedBlog = await scrapedBlog.find({sourceBlogId:id})
+        return res.status(201).json({
+            message: 'All scraped blogs found successfully',
+            filteredscrapedBlog: filteredscrapedBlog
+        });
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 //user for the particular blog
 const getParticularBlogUser = async (req, res) => {
@@ -168,4 +185,4 @@ const bookmark = async (req, res) => {
 }
 
 
-module.exports = { createBlog, getYourBlog, getAllBlogs, delPost, editPost, getParticularBlogUser , updatePinStatus , bookmark }
+module.exports = { createBlog, getYourBlog, getAllBlogs, delPost, editPost, getParticularBlogUser , updatePinStatus , bookmark ,getScrapedBlog}

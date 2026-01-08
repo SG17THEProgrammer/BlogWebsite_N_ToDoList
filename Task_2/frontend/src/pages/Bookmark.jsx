@@ -19,6 +19,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { marked } from 'marked';
 import { format } from "date-fns";
 import { NavLink } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 
 const ExpandMore = styled((props) => {
@@ -56,7 +57,9 @@ const Bookmark = () => {
 
     console.log(bookmarkedBlogs);
     return (
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+      <>
+      <Navbar></Navbar>
+        <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" , marginTop:"50px" }}>
 
             {
                 bookmarkedBlogs?.length > 0 ? (
@@ -107,6 +110,7 @@ const Bookmark = () => {
      : <Alert severity="info" sx={{ display: "flex", justifyContent: "center", width: "100vw" }}>No Bookmarked Blog Found</Alert>}
      
      </Box >
+     </>
   )
 }
 

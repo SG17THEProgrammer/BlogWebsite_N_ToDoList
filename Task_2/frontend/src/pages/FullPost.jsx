@@ -22,12 +22,14 @@ import SharePopup from '../components/SharePopup';
 import { FaRegBookmark } from "react-icons/fa6";
 import { FaBookmark } from "react-icons/fa6";
 import axios from 'axios';
+import { Button, IconButton, Tooltip } from '@mui/material';
 
 const FullPost = () => {
-  const { user , setContextAllBlogs } = useAuth()
+  const { user, setContextAllBlogs } = useAuth()
   const { id } = useParams();
   const [allBlogs, setAllBlogs] = useState();
   const [blogUser, setBlogUser] = useState();
+  const [loading, setLoading] = useState(false)
 
 
 
@@ -195,7 +197,7 @@ const FullPost = () => {
   // isLiked(user?.id,id )
   // },[])
 
-  const bookmark = async (blogId) =>{
+  const bookmark = async (blogId) => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_API}/bookmark`, {
         blogId
@@ -211,15 +213,54 @@ const FullPost = () => {
     }
   }
 
+  const rewrite = async (title, content , id) => {
+    setLoading(true)
+    try {
+
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/rewritePost`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title,
+          content,
+          id
+        })
+      });
+
+      const data = await res.json();
+      toast.success(data.message)
+    }
+    catch (error) {
+      toast.error(data.error)
+      console.log(error);
+
+    }
+    finally {
+      setLoading(false)
+    }
+  };
+
+
   return (
     <>
       <Navbar></Navbar>
       <div className="row">
         <div className="leftcolumn">
           <div className="card">
-            <div style={{ display: 'flex', justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+            <div style={{ display: 'flex', justifyContent: "space-between", alignItems: "flex-start", width: "100%" }}>
               <h2>{postDisplay?.title}</h2>
-              {toggleBookmark ? <FaBookmark style={{ fontSize: "20px", marginTop: "-20px" , cursor:"pointer" }} onClick={()=>bookmark(postDisplay?._id)}/> : <FaRegBookmark style={{ fontSize: "20px", marginTop: "-20px" , cursor:"pointer" }} onClick={()=>bookmark(postDisplay?._id)}/>}
+
+              <IconButton onClick={() => rewrite(postDisplay?.title, markdownContent , postDisplay?._id)} sx={{marginTop:"-5px"}}>
+                <Button variant='contained' size='small' >{loading ? "Re-writing..." : "Re-write Post"}</Button>
+              </IconButton>
+
+            <NavLink to={`/scrapedBlog/${postDisplay._id}`}>
+              <IconButton sx={{marginTop:"-5px"}} >
+                <Button variant='contained' size='small' color='success'>Go to Re-written Post</Button>
+              </IconButton>
+            </NavLink>
+
+              {toggleBookmark ? <Tooltip title='Un-Bookmark'>  <IconButton ><FaBookmark style={{ fontSize: "20px" }} onClick={() => bookmark(postDisplay?._id)} /> </IconButton></Tooltip> : <Tooltip title='Bookmark'><IconButton ><FaRegBookmark style={{ fontSize: "20px" }} onClick={() => bookmark(postDisplay?._id)} /> </IconButton></Tooltip>}
             </div>
             <div className='tagdiv'>
               {postDisplay?.tags?.map((elem, idx) => {
